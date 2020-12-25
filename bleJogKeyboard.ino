@@ -1,6 +1,7 @@
 
 // downloaded https://github.com/T-vK/ESP32-BLE-Keyboard and manually extracted to a library folder next to fastled
-#include "BleKeyboard.h"
+//#include "BleKeyboard.h"
+#include "BleCombo.h"
 
 // my libs
 #include "display_part.h"
@@ -9,108 +10,39 @@
 //#include "led_part.h"
 #include "encoder_part.h"
 
-BleKeyboard bleKeyboard;
+
+BleComboKeyboard keyboard;
+BleComboMouse mouse(&keyboard);
+
+//BleKeyboard bleKeyboard;
+
+enum Mode
+{
+    volume_control,
+    mouse_x,
+    mouse_y,
+    mouse_scroll,
+    arrows_x,
+    arrows_y
+};
+
+//Mode currentMode = arrows_y;
+//Mode currentMode = mouse_y;
+Mode currentMode = volume_control;
+//Mode currentMode = mouse_scroll;
 
 int currentMenu = 0;
 int menuCount = 3;
 
 uint8_t continuousUpdate = 0;
 
-void cycleOption(int dir)
-{
-    switch (currentMenu)
-    {
-    case 0:
-        /*
-            if(dir==-1)
-            else
-            */
-        break;
-    case 1:
-        break;
-    case 2:
 
-        //Serial.println(brightness*brightnessMultiplier + 3);
-        break;
-    default:
-        break;
-    }
-}
-
-void button1PresHandler()
+void setMode(Mode modeToSet)
 {
-    //cycleOption(1);
-    currentMenu = ++currentMenu % menuCount;
+    Serial.println("set mode to " + modeToSet);
+    currentMode = modeToSet;
     report();
 }
-
-void button2PresHandler()
-{
-    currentMenu = ++currentMenu % menuCount;
-    report();
-}
-
-void buttonUpPresHandler()
-{
-    currentMenu = (--currentMenu + menuCount) % menuCount;
-    report();
-}
-void buttonDownPresHandler()
-{
-    currentMenu = ++currentMenu % menuCount;
-    report();
-}
-void buttonLeftPresHandler()
-{
-    //Serial.println("button");
-    cycleOption(-1);
-    report();
-}
-void buttonRightPresHandler()
-{
-    //Serial.println("button");
-    cycleOption(1);
-    report();
-}
-
-void buttonEncoderPresHandler()
-{
-    //currentMenu = ++currentMenu % menuCount;
-    //report();
-
-    if(bleKeyboard.isConnected())
-    {
-        Serial.println("mute");
-        bleKeyboard.write(KEY_MEDIA_MUTE);
-    }
-}
-
-void encoderChanged(int dir)
-{
-    /*
-    cycleOption(dir > 0 ? 1 : -1);
-    */
-
-    Serial.println("d " + String(dir) + " enc " + String(encoderValue) + " amp " + String(encoderValueAmplified) + " ampD " + String(encoderDeltaAmplified));
-
-    if(dir != 0 && bleKeyboard.isConnected())
-    {
-        if(dir > 0)
-        {
-            Serial.println("volume up");
-            bleKeyboard.write(KEY_MEDIA_VOLUME_UP);
-        }
-        else
-        {
-            Serial.println("volume down");
-            bleKeyboard.write(KEY_MEDIA_VOLUME_DOWN);
-        }
-    }
-
-    //report();
-}
-
-//void bothButtonsPressHandler() {}
 
 uint32_t lastUpdated = 0;
 /*
@@ -120,30 +52,17 @@ void report()
 }
 */
 
-
 void report()
 {
     uint32_t color = TFT_RED;
-    //if(battery_voltage>3.4)
-    //    color = TFT_YELLOW;
-    //if(battery_voltage>3.9)
-    //    color = TFT_GREEN;
-    //if(battery_voltage>4.26)
-    //    color = TFT_BLUE;
 
     tft.setTextColor(TFT_GREEN, TFT_BLACK);
     int d = 25;
     clearScreen();
 
-    drawStringWithOffset("line 1", 0, -2*d);
-    drawStringWithOffset("line 2", 0, -d);
+    drawStringWithOffset("connected " + String(keyboard.isConnected()), 0, -2*d);
+    drawStringWithOffset("mode " + String(currentMode), 0, -d);
     drawStringWithOffset("encoder " + String(encoderValue), 0, 0);
-    //drawStringWithOffset(, 0, d);
-    
-    //drawStringWithOffset("Voltage " + String(battery_voltage), 0, 2*d);
-    //tft.drawRoundRect(2, tft.height() - 7, tft.width()-2*2, 7, 4, color);
-    //tft.fillRoundRect(5, tft.height() - 5, 4 + (tft.width()-5*2-4)*percentage, 3, 2, color);
-    
 
     tft.fillCircle(5, tft.height()/2-d*2 + currentMenu*d, 3, TFT_GREEN);
 }
@@ -162,7 +81,10 @@ void setup()
     buttonsSetup();
     encoderSetup();
 
-    bleKeyboard.begin();
+    //bleKeyboard.begin();
+    keyboard.begin();
+    mouse.begin();
+
 
     report();
     delay(200);
@@ -172,7 +94,7 @@ void secondTask()
 {
     encoderLoop();
     uint32_t time = millis();
-    if (time - lastUpdated > 10000)
+    if (time - lastUpdated > 1000)
     {
         report();
         lastUpdated = time;
@@ -186,3 +108,126 @@ void loop()
     //delay(20);
     vTaskDelay(10);
 }
+
+
+
+
+
+
+void encoderChanged(int dir)
+{
+    //Serial.println("d " + String(dir) + " enc " + String(encoderValue) + " amp " + String(encoderValueAmplified) + " ampD " + String(encoderDeltaAmplified));
+    Serial.println("enc " + String(dir) + " amp " + String(encoderDeltaAmplified) + " connected " + String(keyboard.isConnected()) + " mode " + String(currentMode));
+
+    if(dir != 0 && keyboard.isConnected())
+    {
+        switch (currentMode)
+        {
+        case volume_control:
+            Serial.println("volume " + (dir>0)?"up":"down");
+            for(int i = 0; i<abs(encoderDeltaAmplified); i++)
+            {
+                keyboard.write(dir > 0?KEY_MEDIA_VOLUME_UP:KEY_MEDIA_VOLUME_DOWN);
+            }
+            break;
+
+        case mouse_x:
+            Serial.println("move x");
+            mouse.move(char(encoderDeltaAmplified), 0, 0, 0);
+            break;
+
+        case mouse_y:
+            Serial.println("move y");
+            mouse.move(0, char(encoderDeltaAmplified), 0, 0);
+            break;
+
+        case mouse_scroll:
+            Serial.println("scroll");
+            mouse.move(0, 0, char(encoderDeltaAmplified), 0);
+            break;
+        case arrows_y:
+            Serial.println("vertical arrows");
+            for(int i = 0; i<abs(encoderDeltaAmplified); i++)
+            {
+                keyboard.write(dir > 0?KEY_UP_ARROW:KEY_DOWN_ARROW);
+            }
+            break;
+
+        default:
+            Serial.println("undefined mode");
+            break;
+        }
+    }
+
+    report();
+}
+
+// buttons
+
+void buttonEncoderPresHandler()
+{
+    //currentMenu = ++currentMenu % menuCount;
+    //report();
+    Serial.println("mute pressed");
+
+    if(keyboard.isConnected())
+    {
+        Serial.println(", mute sent");
+        keyboard.write(KEY_MEDIA_MUTE);
+    }
+}
+
+void button1PresHandler()
+{
+    //cycleOption(1);
+    Serial.println("button 1");
+    currentMenu = ++currentMenu % menuCount;
+    report();
+}
+
+void button2PresHandler()
+{
+    Serial.println("button 2");
+    currentMenu = ++currentMenu % menuCount;
+    report();
+}
+/*
+void buttonMode1PresHandler()
+{
+    Serial.println("butt 1");
+    //setMode(Mode::volume_control);
+}
+void buttonMode2PresHandler()
+{
+    Serial.println("butt 2");
+    //setMode(Mode::mouse_x);
+}
+void buttonMode3PresHandler()
+{
+    Serial.println("butt 3");
+    //setMode(Mode::mouse_y);
+}
+void buttonMode4PresHandler()
+{
+    Serial.println("butt 4");
+    //setMode(Mode::mouse_scroll);
+}
+*/
+
+void buttonUpPresHandler()
+{
+    Serial.println("up");
+}
+void buttonDownPresHandler()
+{
+    Serial.println("down");
+}
+void buttonLeftPresHandler()
+{
+    Serial.println("left");
+}
+void buttonRightPresHandler()
+{
+    Serial.println("right");
+}
+
