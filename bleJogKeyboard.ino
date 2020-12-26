@@ -26,6 +26,8 @@ enum Mode
     arrows_y
 };
 
+int32_t ModesCount = 6;
+
 //Mode currentMode = arrows_y;
 //Mode currentMode = mouse_y;
 Mode currentMode = volume_control;
@@ -52,21 +54,32 @@ void report()
 }
 */
 
-void report()
+void reportSetup()
 {
-    uint32_t color = TFT_RED;
-
     tft.setTextColor(TFT_GREEN, TFT_BLACK);
-    int d = 25;
-    clearScreen();
-    
-    drawStringWithOffset("connected " + String(keyboard.isConnected()), 0, -2*d);
-    drawStringWithOffset("mode " + String(currentMode), 0, -d);
-    drawStringWithOffset("encoder " + String(encoderValue), 0, 0);
+    tft.setTextDatum(TL_DATUM);
 
-    tft.fillCircle(5, tft.height()/2-d*2 + currentMenu*d, 3, TFT_GREEN);
+    int d = 25;
+
+    drawLeftAlignedStringWithOffset("connected",   20, 5 + 0*d);
+    drawLeftAlignedStringWithOffset("mode",        20, 5 + 1*d);
+    drawLeftAlignedStringWithOffset("encoder",     20, 5 + 2*d);
 }
 
+void report()
+{
+    int d = 25;
+    //clearScreen();
+    clearRect(0, 0, 10, tft.height());
+    clearRect(180, 0, tft.width() - 180, tft.height());
+    
+    drawLeftAlignedStringWithOffset(String(keyboard.isConnected()),        180, 5 + 0*d);
+    drawLeftAlignedStringWithOffset(String(currentMode),                   180, 5 + 1*d);
+    drawLeftAlignedStringWithOffset(String(encoderValue),                  180, 5 + 2*d);
+
+    //tft.fillCircle(5, tft.height()/2-d*2 + currentMenu*d, 3, TFT_GREEN);
+    tft.fillCircle(5, 5 + currentMenu*d, 3, TFT_GREEN);
+}
 
 void setup()
 {
@@ -80,6 +93,7 @@ void setup()
     displaySetup();
     buttonsSetup();
     encoderSetup();
+    reportSetup();
 
     //bleKeyboard.begin();
 //    keyboard.begin();
@@ -230,5 +244,7 @@ void buttonLeftPresHandler()
 void buttonRightPresHandler()
 {
     Serial.println("right");
+    // switch mode
+    currentMode = (Mode)((currentMode+1)%ModesCount);
 }
 

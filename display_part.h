@@ -49,9 +49,19 @@ void drawStringWithOffset(String string, int32_t dx, int32_t dy )
     tft.drawString(string, tft.width() / 2 + dx, tft.height() / 2 + dy);
 }
 
+void drawLeftAlignedStringWithOffset(String string, int32_t dx, int32_t dy )
+{
+    tft.drawString(string, dx, dy);
+}
+
 void clearScreen()
 {
     tft.fillScreen(TFT_BLACK);
+}
+
+void clearRect(int8_t x, int8_t y, int8_t width, int8_t height)
+{
+    tft.fillRect(x, y, width, height, TFT_BLACK);
 }
 
 void writeCenter(String str)
