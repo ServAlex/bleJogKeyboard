@@ -59,7 +59,7 @@ void clearScreen()
     tft.fillScreen(TFT_BLACK);
 }
 
-void clearRect(int8_t x, int8_t y, int8_t width, int8_t height)
+void clearRect(int32_t x, int32_t y, int32_t width, int32_t height)
 {
     tft.fillRect(x, y, width, height, TFT_BLACK);
 }
