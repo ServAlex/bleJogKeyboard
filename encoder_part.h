@@ -15,7 +15,7 @@ int32_t encoderValueAmplified = 0;
 int32_t encoderDeltaAmplified = 0;
 
 int encoderPin1 = 15;
-int encoderPin2 = 13;
+int encoderPin2 = 17;
 
 void encoderChanged(int dir);
 

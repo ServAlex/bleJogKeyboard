@@ -59,7 +59,7 @@ void report()
     tft.setTextColor(TFT_GREEN, TFT_BLACK);
     int d = 25;
     clearScreen();
-
+    
     drawStringWithOffset("connected " + String(keyboard.isConnected()), 0, -2*d);
     drawStringWithOffset("mode " + String(currentMode), 0, -d);
     drawStringWithOffset("encoder " + String(encoderValue), 0, 0);
@@ -82,8 +82,8 @@ void setup()
     encoderSetup();
 
     //bleKeyboard.begin();
-    keyboard.begin();
-    mouse.begin();
+//    keyboard.begin();
+//    mouse.begin();
 
 
     report();
@@ -99,6 +99,7 @@ void secondTask()
         report();
         lastUpdated = time;
     }
+    //vTaskDelay(10);
 }
 
 void loop()
@@ -159,7 +160,7 @@ void encoderChanged(int dir)
         }
     }
 
-    report();
+    //report();
 }
 
 // buttons
