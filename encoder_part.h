@@ -38,7 +38,7 @@ int32_t power(int32_t base, int32_t p)
 
 float power(float base, int32_t p, int32_t max)
 {
-    float res = 2;
+    float res = 4;
     for(int i = 0; i<p; i++)
     {
         res*=base;
@@ -66,10 +66,10 @@ int32_t amplifyer(int32_t i)
     float velocity = float(abs(i))/(timeDelta);
     // + "" + String()
 
-    if(velocity < 0.015)
+    if(velocity < 0.025)
         return sign;
 
-    float res = sign*power(1.3f, int32_t(velocity*67), 100);
+    float res = sign*power(1.2f, int32_t(velocity*67), 100);
 
     //Serial.println(String(velocity, '\004') + " " + String(abs(i))+ " " + String(timeDelta) + " power " + String(int32_t(velocity*67)) + " res " + String(res, '\004'));
 

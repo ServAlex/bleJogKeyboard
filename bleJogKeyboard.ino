@@ -10,10 +10,6 @@
 //#include "led_part.h"
 #include "encoder_part.h"
 
-/*
-BleComboKeyboard keyboard;
-BleComboMouse mouse(&keyboard);
-*/
 //BleKeyboard bleKeyboard;
 
 enum Mode
@@ -24,10 +20,11 @@ enum Mode
     mouse_scroll_x,
     mouse_scroll_y,
     arrows_x,
-    arrows_y
+    arrows_y,
+    zoom
 };
 
-int32_t ModesCount = 7;
+int32_t ModesCount = 8;
 
 //Mode currentMode = arrows_y;
 //Mode currentMode = mouse_y;
@@ -159,6 +156,10 @@ String modeToName(Mode mode)
             return "arrows y";
             break;
 
+        case zoom:
+            return "zoom";
+            break;
+
         default:
             return "Error";
             break;
@@ -195,12 +196,12 @@ void encoderChanged(int dir)
 
             case mouse_scroll_x:
                 Serial.println("scroll horizontaly");
-                Mouse.move(0, 0, char(encoderDeltaAmplified), 0);
+                Mouse.move(0, 0, 0, char(encoderDeltaAmplified));
                 break;
 
             case mouse_scroll_y:
                 Serial.println("scroll verticaly");
-                Mouse.move(0, 0, 0, char(encoderDeltaAmplified));
+                Mouse.move(0, 0, char(encoderDeltaAmplified), 0);
                 break;
 
             case arrows_x:
@@ -217,6 +218,13 @@ void encoderChanged(int dir)
                 {
                     Keyboard.write(dir > 0?KEY_UP_ARROW:KEY_DOWN_ARROW);
                 }
+                break;
+
+            case zoom:
+                Serial.println("zoom");
+                Keyboard.press(KEY_LEFT_CTRL);
+                Mouse.move(0, 0, char(encoderDeltaAmplified), 0);
+                Keyboard.release(KEY_LEFT_CTRL);
                 break;
 
             default:
