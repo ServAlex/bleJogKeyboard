@@ -108,21 +108,22 @@ void setup()
 void secondTask()
 {
     encoderLoop();
-    uint32_t time = millis();
-    if (time - lastUpdated > 1000)
-    {
-        report();
-        lastUpdated = time;
-    }
     //vTaskDelay(10);
 }
 
 void loop()
 {
     //encoderLoop();
-    //    Serial.print(" " + String(encoder.getCount()) );
-    //delay(20);
-    vTaskDelay(10);
+    uint32_t time = millis();
+    if (time - lastUpdated > 50)
+    {
+        report();
+        lastUpdated = time;
+    }
+    else
+    {
+        vTaskDelay(10);
+    }
 }
 
 
