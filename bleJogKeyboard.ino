@@ -10,10 +10,10 @@
 //#include "led_part.h"
 #include "encoder_part.h"
 
-
+/*
 BleComboKeyboard keyboard;
 BleComboMouse mouse(&keyboard);
-
+*/
 //BleKeyboard bleKeyboard;
 
 enum Mode
@@ -75,12 +75,12 @@ void report()
     clearRect(0, 0, 10, tft.height());
     clearRect(secondColumnStart, 0, tft.width() - secondColumnStart, tft.height());
     
-    drawLeftAlignedStringWithOffset(String(keyboard.isConnected()),        secondColumnStart, 5 + 0*d);
+    drawLeftAlignedStringWithOffset(String(Keyboard.isConnected()),        secondColumnStart, 5 + 0*d);
     drawLeftAlignedStringWithOffset(modeToName(currentMode),               secondColumnStart, 5 + 1*d);
     drawLeftAlignedStringWithOffset(String(encoderValue),                  secondColumnStart, 5 + 2*d);
 
     //tft.fillCircle(5, tft.height()/2-d*2 + currentMenu*d, 3, TFT_GREEN);
-    tft.fillCircle(5, 10 + currentMenu*d, 3, TFT_GREEN);
+    tft.fillCircle(5, 15 + currentMenu*d, 3, TFT_GREEN);
 }
 
 void setup()
@@ -98,8 +98,8 @@ void setup()
     reportSetup();
 
     //bleKeyboard.begin();
-    keyboard.begin();
-    mouse.begin();
+    Keyboard.begin();
+    Mouse.begin();
 
     report();
     delay(200);
@@ -124,7 +124,6 @@ void loop()
     //delay(20);
     vTaskDelay(10);
 }
-
 
 
 String modeToName(Mode mode)
@@ -166,13 +165,12 @@ String modeToName(Mode mode)
     return "Error";
 }
 
-
 void encoderChanged(int dir)
 {
     //Serial.println("d " + String(dir) + " enc " + String(encoderValue) + " amp " + String(encoderValueAmplified) + " ampD " + String(encoderDeltaAmplified));
-    Serial.println("enc " + String(dir) + " amp " + String(encoderDeltaAmplified) + " connected " + String(keyboard.isConnected()) + " mode " + String(currentMode));
+    Serial.println("enc " + String(dir) + " amp " + String(encoderDeltaAmplified) + " connected " + String(Keyboard.isConnected()) + " mode " + String(currentMode));
 
-    if(dir != 0 && keyboard.isConnected())
+    if(dir != 0 && Keyboard.isConnected())
     {
         switch (currentMode)
         {
@@ -180,35 +178,35 @@ void encoderChanged(int dir)
                 Serial.println("volume " + (dir>0)?"up":"down");
                 for(int i = 0; i<abs(encoderDeltaAmplified); i++)
                 {
-                    keyboard.write(dir > 0?KEY_MEDIA_VOLUME_UP:KEY_MEDIA_VOLUME_DOWN);
+                    Keyboard.write(dir > 0?KEY_MEDIA_VOLUME_UP:KEY_MEDIA_VOLUME_DOWN);
                 }
                 break;
 
             case mouse_x:
                 Serial.println("move x");
-                mouse.move(char(encoderDeltaAmplified), 0, 0, 0);
+                Mouse.move(char(encoderDeltaAmplified), 0, 0, 0);
                 break;
 
             case mouse_y:
                 Serial.println("move y");
-                mouse.move(0, char(encoderDeltaAmplified), 0, 0);
+                Mouse.move(0, char(encoderDeltaAmplified), 0, 0);
                 break;
 
             case mouse_scroll_x:
                 Serial.println("scroll horizontaly");
-                mouse.move(0, 0, char(encoderDeltaAmplified), 0);
+                Mouse.move(0, 0, char(encoderDeltaAmplified), 0);
                 break;
 
             case mouse_scroll_y:
                 Serial.println("scroll verticaly");
-                mouse.move(0, 0, 0, char(encoderDeltaAmplified));
+                Mouse.move(0, 0, 0, char(encoderDeltaAmplified));
                 break;
 
             case arrows_x:
                 Serial.println("horizontal arrows");
                 for(int i = 0; i<abs(encoderDeltaAmplified); i++)
                 {
-                    keyboard.write(dir > 0?KEY_RIGHT_ARROW:KEY_LEFT_ARROW);
+                    Keyboard.write(dir > 0?KEY_RIGHT_ARROW:KEY_LEFT_ARROW);
                 }
                 break;
 
@@ -216,7 +214,7 @@ void encoderChanged(int dir)
                 Serial.println("vertical arrows");
                 for(int i = 0; i<abs(encoderDeltaAmplified); i++)
                 {
-                    keyboard.write(dir > 0?KEY_UP_ARROW:KEY_DOWN_ARROW);
+                    Keyboard.write(dir > 0?KEY_UP_ARROW:KEY_DOWN_ARROW);
                 }
                 break;
 
@@ -237,10 +235,10 @@ void buttonEncoderPresHandler()
     //report();
     Serial.println("mute pressed");
 
-    if(keyboard.isConnected())
+    if(Keyboard.isConnected())
     {
         Serial.println(", mute sent");
-        keyboard.write(KEY_MEDIA_MUTE);
+        Keyboard.write(KEY_MEDIA_MUTE);
     }
 }
 
@@ -285,7 +283,7 @@ void buttonUpPresHandler()
 {
     Serial.println("up");
     // left mouse click
-    mouse.click(MOUSE_LEFT);
+    Mouse.click(MOUSE_LEFT);
 }
 void buttonDownPresHandler()
 {
@@ -298,7 +296,7 @@ void buttonLeftPresHandler()
 {
     Serial.println("left");
     // right mouse click
-    mouse.click(MOUSE_RIGHT);
+    Mouse.click(MOUSE_RIGHT);
 }
 void buttonRightPresHandler()
 {
@@ -307,4 +305,3 @@ void buttonRightPresHandler()
     currentMode = (Mode)((currentMode+1)%ModesCount);
     resetEncoder();
 }
-
