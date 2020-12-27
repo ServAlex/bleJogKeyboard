@@ -98,9 +98,8 @@ void setup()
     reportSetup();
 
     //bleKeyboard.begin();
-//    keyboard.begin();
-//    mouse.begin();
-
+    keyboard.begin();
+    mouse.begin();
 
     report();
     delay(200);
@@ -291,6 +290,9 @@ void buttonUpPresHandler()
 void buttonDownPresHandler()
 {
     Serial.println("down");
+    // switch mode back
+    currentMode = (Mode)((currentMode+ModesCount-1)%ModesCount);
+    resetEncoder();
 }
 void buttonLeftPresHandler()
 {
