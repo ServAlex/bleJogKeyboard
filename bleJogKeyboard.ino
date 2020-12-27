@@ -21,12 +21,13 @@ enum Mode
     volume_control,
     mouse_x,
     mouse_y,
-    mouse_scroll,
+    mouse_scroll_x,
+    mouse_scroll_y,
     arrows_x,
     arrows_y
 };
 
-int32_t ModesCount = 6;
+int32_t ModesCount = 7;
 
 //Mode currentMode = arrows_y;
 //Mode currentMode = mouse_y;
@@ -61,24 +62,25 @@ void reportSetup()
 
     int d = 25;
 
-    drawLeftAlignedStringWithOffset("connected",   20, 5 + 0*d);
-    drawLeftAlignedStringWithOffset("mode",        20, 5 + 1*d);
-    drawLeftAlignedStringWithOffset("encoder",     20, 5 + 2*d);
+    drawLeftAlignedStringWithOffset("connect",      20, 5 + 0*d);
+    drawLeftAlignedStringWithOffset("mode",         20, 5 + 1*d);
+    drawLeftAlignedStringWithOffset("encoder",      20, 5 + 2*d);
 }
 
 void report()
 {
     int d = 25;
+    int secondColumnStart = 140;
     //clearScreen();
     clearRect(0, 0, 10, tft.height());
-    clearRect(180, 0, tft.width() - 180, tft.height());
+    clearRect(secondColumnStart, 0, tft.width() - secondColumnStart, tft.height());
     
-    drawLeftAlignedStringWithOffset(String(keyboard.isConnected()),        180, 5 + 0*d);
-    drawLeftAlignedStringWithOffset(String(currentMode),                   180, 5 + 1*d);
-    drawLeftAlignedStringWithOffset(String(encoderValue),                  180, 5 + 2*d);
+    drawLeftAlignedStringWithOffset(String(keyboard.isConnected()),        secondColumnStart, 5 + 0*d);
+    drawLeftAlignedStringWithOffset(modeToName(currentMode),               secondColumnStart, 5 + 1*d);
+    drawLeftAlignedStringWithOffset(String(encoderValue),                  secondColumnStart, 5 + 2*d);
 
     //tft.fillCircle(5, tft.height()/2-d*2 + currentMenu*d, 3, TFT_GREEN);
-    tft.fillCircle(5, 5 + currentMenu*d, 3, TFT_GREEN);
+    tft.fillCircle(5, 10 + currentMenu*d, 3, TFT_GREEN);
 }
 
 void setup()
@@ -126,7 +128,44 @@ void loop()
 
 
 
+String modeToName(Mode mode)
+{
+    switch (currentMode)
+    {
+        case volume_control:
+            return "volume";
+            break;
 
+        case mouse_x:
+            return "mouse x";
+            break;
+
+        case mouse_y:
+            return "mouse y";
+            break;
+
+        case mouse_scroll_x:
+            return "scroll x";
+            break;
+
+        case mouse_scroll_y:
+            return "scroll y";
+            break;
+
+        case arrows_x:
+            return "arrows x";
+            break;
+
+        case arrows_y:
+            return "arrows y";
+            break;
+
+        default:
+            return "Error";
+            break;
+    }
+    return "Error";
+}
 
 
 void encoderChanged(int dir)
@@ -138,39 +177,53 @@ void encoderChanged(int dir)
     {
         switch (currentMode)
         {
-        case volume_control:
-            Serial.println("volume " + (dir>0)?"up":"down");
-            for(int i = 0; i<abs(encoderDeltaAmplified); i++)
-            {
-                keyboard.write(dir > 0?KEY_MEDIA_VOLUME_UP:KEY_MEDIA_VOLUME_DOWN);
-            }
-            break;
+            case volume_control:
+                Serial.println("volume " + (dir>0)?"up":"down");
+                for(int i = 0; i<abs(encoderDeltaAmplified); i++)
+                {
+                    keyboard.write(dir > 0?KEY_MEDIA_VOLUME_UP:KEY_MEDIA_VOLUME_DOWN);
+                }
+                break;
 
-        case mouse_x:
-            Serial.println("move x");
-            mouse.move(char(encoderDeltaAmplified), 0, 0, 0);
-            break;
+            case mouse_x:
+                Serial.println("move x");
+                mouse.move(char(encoderDeltaAmplified), 0, 0, 0);
+                break;
 
-        case mouse_y:
-            Serial.println("move y");
-            mouse.move(0, char(encoderDeltaAmplified), 0, 0);
-            break;
+            case mouse_y:
+                Serial.println("move y");
+                mouse.move(0, char(encoderDeltaAmplified), 0, 0);
+                break;
 
-        case mouse_scroll:
-            Serial.println("scroll");
-            mouse.move(0, 0, char(encoderDeltaAmplified), 0);
-            break;
-        case arrows_y:
-            Serial.println("vertical arrows");
-            for(int i = 0; i<abs(encoderDeltaAmplified); i++)
-            {
-                keyboard.write(dir > 0?KEY_UP_ARROW:KEY_DOWN_ARROW);
-            }
-            break;
+            case mouse_scroll_x:
+                Serial.println("scroll horizontaly");
+                mouse.move(0, 0, char(encoderDeltaAmplified), 0);
+                break;
 
-        default:
-            Serial.println("undefined mode");
-            break;
+            case mouse_scroll_y:
+                Serial.println("scroll verticaly");
+                mouse.move(0, 0, 0, char(encoderDeltaAmplified));
+                break;
+
+            case arrows_x:
+                Serial.println("horizontal arrows");
+                for(int i = 0; i<abs(encoderDeltaAmplified); i++)
+                {
+                    keyboard.write(dir > 0?KEY_RIGHT_ARROW:KEY_LEFT_ARROW);
+                }
+                break;
+
+            case arrows_y:
+                Serial.println("vertical arrows");
+                for(int i = 0; i<abs(encoderDeltaAmplified); i++)
+                {
+                    keyboard.write(dir > 0?KEY_UP_ARROW:KEY_DOWN_ARROW);
+                }
+                break;
+
+            default:
+                Serial.println("undefined mode");
+                break;
         }
     }
 
@@ -232,6 +285,8 @@ void buttonMode4PresHandler()
 void buttonUpPresHandler()
 {
     Serial.println("up");
+    // left mouse click
+    mouse.click(MOUSE_LEFT);
 }
 void buttonDownPresHandler()
 {
@@ -240,11 +295,14 @@ void buttonDownPresHandler()
 void buttonLeftPresHandler()
 {
     Serial.println("left");
+    // right mouse click
+    mouse.click(MOUSE_RIGHT);
 }
 void buttonRightPresHandler()
 {
     Serial.println("right");
     // switch mode
     currentMode = (Mode)((currentMode+1)%ModesCount);
+    resetEncoder();
 }
 

@@ -92,39 +92,28 @@ long lastDebounceTime = 0;
 int debounceDelay = 50;
 int buttonState = LOW;
 
+void resetEncoder()
+{
+    encoder.setCount(0);
+    encoderValue = 0;
+    encoderValue_old = 0;
+}
+
 void encoderLoop()
 {
-
     encoderValue_old = encoderValue;
     encoderValue = -encoder.getCount();
     //encoderValue = encoder.getCount()/2;
     encoderDelta = encoderValue - encoderValue_old ;
 
-
     encoderDeltaAmplified = amplifyer(encoderDelta);
-    //encoderValueAmplified += max(min(encoderDeltaAmplified, 10), -10);
     encoderValueAmplified += encoderDeltaAmplified;
 
     if(encoderDelta != 0)
     {
-        
         encoderChanged(encoderDelta);
     }
 
-/*
-    int reading = digitalRead(encoderButtonPin);
-    if (reading != lastButtonState) {
-        lastDebounceTime = millis();
-    }
-    if ((millis() - lastDebounceTime) > debounceDelay && reading != buttonState) 
-    {
-        buttonState = reading;
-        if (buttonState == HIGH) {
-            encoderButtonPressed();
-        }
-    }
-    lastButtonState = reading;
-    */
     //Serial.println(" encoder loop finished");
 }
 
