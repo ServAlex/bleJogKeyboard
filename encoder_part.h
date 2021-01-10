@@ -22,8 +22,8 @@ void encoderChanged(int dir);
 void encoderSetup()
 {
     ESP32Encoder::useInternalWeakPullResistors=true;
-    encoder.attachSingleEdge(encoderPin1, encoderPin2);
-	//encoder.attachHalfQuad(encoderPin1, encoderPin2);
+    //encoder.attachSingleEdge(encoderPin1, encoderPin2);
+	encoder.attachHalfQuad(encoderPin1, encoderPin2);
 	encoder.setCount(1);
     //encoder.resumeCount();
 }
@@ -52,6 +52,8 @@ uint32_t encoderLastUpdated = 0;
 
 int32_t amplifyer(int32_t i)
 {
+    return i;
+    
     uint32_t time = millis();
 
     if(!i) return 0;
@@ -66,10 +68,11 @@ int32_t amplifyer(int32_t i)
     float velocity = float(abs(i))/(timeDelta);
     // + "" + String()
 
-    if(velocity < 0.025)
+    //if(velocity < 0.025)
+    if(velocity < 0.85)
         return sign;
 
-    float res = sign*power(1.2f, int32_t(velocity*67), 100);
+    float res = sign*power(1.1f, int32_t(velocity*67), 100);
 
     //Serial.println(String(velocity, '\004') + " " + String(abs(i))+ " " + String(timeDelta) + " power " + String(int32_t(velocity*67)) + " res " + String(res, '\004'));
 
@@ -102,7 +105,7 @@ void resetEncoder()
 void encoderLoop()
 {
     encoderValue_old = encoderValue;
-    encoderValue = -encoder.getCount();
+    encoderValue = -(encoder.getCount())/2;
     //encoderValue = encoder.getCount()/2;
     encoderDelta = encoderValue - encoderValue_old ;
 

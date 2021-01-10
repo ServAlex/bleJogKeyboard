@@ -136,16 +136,30 @@ void buttonEncoderPresHandler()
 
 void button1PresHandler()
 {
+    /*
     Serial.println("button 1");
     currentMenu = ++currentMenu % menuCount;
     report();
+    */
+
+    Serial.println("button 1 - prev menu");
+    // switch mode back
+    activeMode = (activeMode + filledModesCount - 1)%filledModesCount;
+    resetEncoder();
 }
 
 void button2PresHandler()
 {
+    /*
     Serial.println("button 2");
     currentMenu = ++currentMenu % menuCount;
     report();
+    */
+
+    Serial.println("button 2 - next menu");
+    // switch mode
+    activeMode = (activeMode + 1)%filledModesCount;
+    resetEncoder();
 }
 
 void buttonUpPresHandler()
