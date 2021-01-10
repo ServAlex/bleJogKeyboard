@@ -35,6 +35,10 @@ void secondaryHandler_mouse_y(BleComboKeyboard Keyboard, BleComboMouse Mouse)
     }
 }
 
+void fastLoopHandler_mouse_y(BleComboKeyboard Keyboard, BleComboMouse Mouse)
+{
+}
+
 String modeShortName_mouse_y()
 {
     return "mouse  y";
@@ -48,6 +52,7 @@ ModeDefinition mouse_y_mode_definition()
     resultDefinition.encoderClickHandler = encoderClickHandler_mouse_y;
     resultDefinition.primaryHandler = primaryHandler_mouse_y;
     resultDefinition.secondaryHandler = secondaryHandler_mouse_y;
+    resultDefinition.fastLoopHandler = fastLoopHandler_mouse_y;
 
     return resultDefinition;
 }

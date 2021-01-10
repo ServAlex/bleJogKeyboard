@@ -21,8 +21,11 @@
 #include "modes/arrows_vertical_mode.h"       // 7
 #include "modes/arrows_horizontal_mode.h"     // 8
 #include "modes/undo_mode.h"                  // 9
+#include "modes/tab_switch_mode.h"            // 10
+#include "modes/mouse_drag_x_mode.h"          // 11
+#include "modes/mouse_drag_y_mode.h"          // 12
 
-const int32_t ModesCount = 20;
+const int32_t ModesCount = 100;
 ModeDefinition modes[ModesCount];
 int32_t activeMode;
 int32_t filledModesCount = 0;
@@ -69,10 +72,13 @@ void setup()
     modes[filledModesCount++] = zoom_mode_definition();
     modes[filledModesCount++] = mouse_x_mode_definition();
     modes[filledModesCount++] = mouse_y_mode_definition();
+    modes[filledModesCount++] = mouse_drag_x_mode_definition();
+    modes[filledModesCount++] = mouse_drag_y_mode_definition();
     modes[filledModesCount++] = mouse_scroll_x_mode_definition();
     modes[filledModesCount++] = mouse_scroll_y_mode_definition();
     modes[filledModesCount++] = arrows_horizontal_mode_definition();
     modes[filledModesCount++] = arrows_vertical_mode_definition();
+    modes[filledModesCount++] = tab_switch_mode_definition();
     modes[filledModesCount++] = undo_mode_definition();
 
     activeMode = 0;
@@ -98,6 +104,7 @@ void setup()
 void secondTask()
 {
     encoderLoop();
+    modes[activeMode].fastLoopHandler(Keyboard, Mouse);
     //vTaskDelay(10);
 }
 

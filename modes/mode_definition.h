@@ -9,6 +9,7 @@ typedef void (*EncoderScrollHandler)(BleComboKeyboard Keyboard, BleComboMouse Mo
 typedef void (*EncoderClickHandler)(BleComboKeyboard Keyboard, BleComboMouse Mouse);
 typedef void (*PrimaryHandler)(BleComboKeyboard Keyboard, BleComboMouse Mouse);
 typedef void (*SecondaryHandler)(BleComboKeyboard Keyboard, BleComboMouse Mouse);
+typedef void (*FastLoopHandler)(BleComboKeyboard Keyboard, BleComboMouse Mouse);
 
 struct ModeDefinition
 {
@@ -17,6 +18,7 @@ struct ModeDefinition
     EncoderClickHandler encoderClickHandler;
     PrimaryHandler primaryHandler;
     SecondaryHandler secondaryHandler;
+    FastLoopHandler fastLoopHandler;
 } mode_definition;
 
 #endif

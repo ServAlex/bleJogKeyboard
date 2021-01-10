@@ -35,6 +35,10 @@ void secondaryHandler_mouse_scroll_x(BleComboKeyboard Keyboard, BleComboMouse Mo
     }
 }
 
+void fastLoopHandler_mouse_scroll_x(BleComboKeyboard Keyboard, BleComboMouse Mouse)
+{
+}
+
 String modeShortName_mouse_scroll_x()
 {
     return "scroll x";
@@ -48,6 +52,7 @@ ModeDefinition mouse_scroll_x_mode_definition()
     resultDefinition.encoderClickHandler = encoderClickHandler_mouse_scroll_x;
     resultDefinition.primaryHandler = primaryHandler_mouse_scroll_x;
     resultDefinition.secondaryHandler = secondaryHandler_mouse_scroll_x;
+    resultDefinition.fastLoopHandler = fastLoopHandler_mouse_scroll_x;
 
     return resultDefinition;
 }

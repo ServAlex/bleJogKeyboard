@@ -29,6 +29,10 @@ void secondaryHandler_zoom(BleComboKeyboard Keyboard, BleComboMouse Mouse)
 
 }
 
+void fastLoopHandler_zoom(BleComboKeyboard Keyboard, BleComboMouse Mouse)
+{
+}
+
 String modeShortName_zoom()
 {
     return "zoom";
@@ -42,6 +46,7 @@ ModeDefinition zoom_mode_definition()
     resultDefinition.encoderClickHandler = encoderClickHandler_zoom;
     resultDefinition.primaryHandler = primaryHandler_zoom;
     resultDefinition.secondaryHandler = secondaryHandler_zoom;
+    resultDefinition.fastLoopHandler = fastLoopHandler_zoom;
 
     return resultDefinition;
 }

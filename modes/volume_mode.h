@@ -34,6 +34,10 @@ void secondaryHandler_volume(BleComboKeyboard Keyboard, BleComboMouse Mouse)
 
 }
 
+void fastLoopHandler_volume(BleComboKeyboard Keyboard, BleComboMouse Mouse)
+{
+}
+
 String modeShortName_volume()
 {
     return "volume";
@@ -47,6 +51,7 @@ ModeDefinition volume_mode_definition()
     resultDefinition.encoderClickHandler = encoderClickHandler_volume;
     resultDefinition.primaryHandler = primaryHandler_volume;
     resultDefinition.secondaryHandler = secondaryHandler_volume;
+    resultDefinition.fastLoopHandler = fastLoopHandler_volume;
 
     return resultDefinition;
 }

@@ -46,6 +46,10 @@ void secondaryHandler_undo(BleComboKeyboard Keyboard, BleComboMouse Mouse)
     }
 }
 
+void fastLoopHandler_undo(BleComboKeyboard Keyboard, BleComboMouse Mouse)
+{
+}
+
 String modeShortName_undo()
 {
     return String("undo ") + (undo_unix_style?"u":"ms");
@@ -59,6 +63,7 @@ ModeDefinition undo_mode_definition()
     resultDefinition.encoderClickHandler = encoderClickHandler_undo;
     resultDefinition.primaryHandler = primaryHandler_undo;
     resultDefinition.secondaryHandler = secondaryHandler_undo;
+    resultDefinition.fastLoopHandler = fastLoopHandler_undo;
 
     return resultDefinition;
 }

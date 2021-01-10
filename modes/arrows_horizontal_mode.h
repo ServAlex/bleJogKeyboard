@@ -37,6 +37,10 @@ void secondaryHandler_arrows_horizontal(BleComboKeyboard Keyboard, BleComboMouse
     }
 }
 
+void fastLoopHandler_arrows_horizontal(BleComboKeyboard Keyboard, BleComboMouse Mouse)
+{
+}
+
 String modeShortName_arrows_horizontal()
 {
     return "arrows x";
@@ -50,6 +54,7 @@ ModeDefinition arrows_horizontal_mode_definition()
     resultDefinition.encoderClickHandler = encoderClickHandler_arrows_horizontal;
     resultDefinition.primaryHandler = primaryHandler_arrows_horizontal;
     resultDefinition.secondaryHandler = secondaryHandler_arrows_horizontal;
+    resultDefinition.fastLoopHandler = fastLoopHandler_arrows_horizontal;
 
     return resultDefinition;
 }

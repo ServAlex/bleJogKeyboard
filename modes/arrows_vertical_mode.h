@@ -37,6 +37,10 @@ void secondaryHandler_arrows_vertical(BleComboKeyboard Keyboard, BleComboMouse M
     }
 }
 
+void fastLoopHandler_arrows_vertical(BleComboKeyboard Keyboard, BleComboMouse Mouse)
+{
+}
+
 String modeShortName_arrows_vertical()
 {
     return "arrows  y";
@@ -50,6 +54,7 @@ ModeDefinition arrows_vertical_mode_definition()
     resultDefinition.encoderClickHandler = encoderClickHandler_arrows_vertical;
     resultDefinition.primaryHandler = primaryHandler_arrows_vertical;
     resultDefinition.secondaryHandler = secondaryHandler_arrows_vertical;
+    resultDefinition.fastLoopHandler = fastLoopHandler_arrows_vertical;
 
     return resultDefinition;
 }
