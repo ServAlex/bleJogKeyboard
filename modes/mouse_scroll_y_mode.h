@@ -8,7 +8,7 @@ void encoderScrollHandler_mouse_scroll_y(BleComboKeyboard Keyboard, BleComboMous
 {
     if(Keyboard.isConnected())
     {
-        Mouse.move(0, 0, char(d), 0);
+        Mouse.move(0, 0, -char(d), 0);
     }
 }
 
