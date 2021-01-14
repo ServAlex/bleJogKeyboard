@@ -6,20 +6,36 @@
 
 uint32_t lastMovementTime = 0;
 uint32_t releaseThreshold = 3*1000;
-bool leftButtonDown = false;
+//bool leftButtonDown = false;
 
 void encoderScrollHandler_drag_x(BleComboKeyboard Keyboard, BleComboMouse Mouse, int32_t d)
 {
     if(Keyboard.isConnected())
     {
-        
+       /* 
         if(!leftButtonDown)
         {
             Mouse.press(MOUSE_LEFT);
             leftButtonDown = true;
         }
+        */
 
-        Mouse.move(char(d), 0, 0, 0);
+        //Mouse.move(char(d), 0, 0, 0);
+/*
+        Mouse.move(10, 10, 0);
+        Mouse.press(MOUSE_LEFT);
+
+        Mouse.move(50, 50, 0);
+        vTaskDelay(300);
+*/
+
+    //Mouse.move(10, 10, 0);
+    Mouse.press(MOUSE_LEFT);
+    Mouse.move(d, 0, 0);
+    vTaskDelay(100);
+    Mouse.release();
+        //Mouse.release();
+
         lastMovementTime = millis();
     }
 }
@@ -49,9 +65,9 @@ void secondaryHandler_drag_x(BleComboKeyboard Keyboard, BleComboMouse Mouse)
 
 void fastLoopHandler_drag_x(BleComboKeyboard Keyboard, BleComboMouse Mouse)
 {
-    if(millis() - lastMovementTime > releaseThreshold && leftButtonDown)
+    if(millis() - lastMovementTime > releaseThreshold && Mouse.isPressed(MOUSE_LEFT))
     {
-        leftButtonDown = false;
+        //leftButtonDown = false;
         Mouse.release();
         Serial.println("releasing");
     }

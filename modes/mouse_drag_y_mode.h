@@ -8,6 +8,7 @@ void encoderScrollHandler_drag_y(BleComboKeyboard Keyboard, BleComboMouse Mouse,
 {
     if(Keyboard.isConnected())
     {
+        /*
         if(!leftButtonDown)
         {
             Mouse.press(MOUSE_LEFT);
@@ -15,6 +16,12 @@ void encoderScrollHandler_drag_y(BleComboKeyboard Keyboard, BleComboMouse Mouse,
         }
         Mouse.move(0, char(d), 0, 0);
         lastMovementTime = millis();
+        */
+
+        Mouse.press(MOUSE_LEFT);
+        Mouse.move(0, d, 0);
+        vTaskDelay(100);
+        Mouse.release();
     }
 }
 
@@ -43,10 +50,18 @@ void secondaryHandler_drag_y(BleComboKeyboard Keyboard, BleComboMouse Mouse)
 
 void fastLoopHandler_drag_y(BleComboKeyboard Keyboard, BleComboMouse Mouse)
 {
+    /*
     if(millis() - lastMovementTime > releaseThreshold)
     {
         leftButtonDown = false;
         Mouse.release();
+    }
+    */
+    if(millis() - lastMovementTime > releaseThreshold && Mouse.isPressed(MOUSE_LEFT))
+    {
+        //leftButtonDown = false;
+        Mouse.release();
+        Serial.println("releasing");
     }
 }
 
