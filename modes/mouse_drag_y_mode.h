@@ -4,24 +4,19 @@
 #include "mode_definition.h"
 #include "BleCombo.h"
 
+uint32_t drag_y_lastMovementTime = 0;
+uint32_t drag_y_releaseThreshold = 1*1000;
+bool drag_y_pressed = false;
+
 void encoderScrollHandler_drag_y(BleComboKeyboard Keyboard, BleComboMouse Mouse, int32_t d)
 {
     if(Keyboard.isConnected())
     {
-        /*
-        if(!leftButtonDown)
-        {
-            Mouse.press(MOUSE_LEFT);
-            leftButtonDown = true;
-        }
-        Mouse.move(0, char(d), 0, 0);
-        lastMovementTime = millis();
-        */
-
         Mouse.press(MOUSE_LEFT);
+        drag_y_pressed = true;
         Mouse.move(0, d, 0);
-        vTaskDelay(100);
-        Mouse.release();
+
+        drag_y_lastMovementTime = millis();
     }
 }
 
@@ -50,17 +45,12 @@ void secondaryHandler_drag_y(BleComboKeyboard Keyboard, BleComboMouse Mouse)
 
 void fastLoopHandler_drag_y(BleComboKeyboard Keyboard, BleComboMouse Mouse)
 {
-    /*
-    if(millis() - lastMovementTime > releaseThreshold)
+    if(millis() - drag_y_lastMovementTime > drag_y_releaseThreshold && drag_y_pressed)
     {
-        leftButtonDown = false;
-        Mouse.release();
-    }
-    */
-    if(millis() - lastMovementTime > releaseThreshold && Mouse.isPressed(MOUSE_LEFT))
-    {
-        //leftButtonDown = false;
-        Mouse.release();
+        Mouse.release(MOUSE_LEFT);
+        Mouse.click(MOUSE_LEFT);
+        drag_y_pressed = false;
+        
         Serial.println("releasing");
     }
 }
