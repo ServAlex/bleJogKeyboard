@@ -36,6 +36,8 @@ int menuCount = 3;
 
 uint32_t lastUpdated = 0;
 
+bool report_needed = false;
+
 void reportSetup()
 {
     tft.setTextColor(TFT_GREEN, TFT_BLACK);
@@ -48,7 +50,7 @@ void reportSetup()
     drawLeftAlignedStringWithOffset("encoder",      20, 5 + 2*d);
 }
 
-void report()
+void report_on_demand()
 {
     int d = 25;
     int secondColumnStart = 140;
@@ -62,6 +64,16 @@ void report()
 
     //tft.fillCircle(5, tft.height()/2-d*2 + currentMenu*d, 3, TFT_GREEN);
     tft.fillCircle(5, 15 + currentMenu*d, 3, TFT_GREEN);
+
+    report_needed = false;
+}
+
+void report_regular()
+{
+    int d = 25;
+    int secondColumnStart = 140;
+    clearRect(secondColumnStart, 0, tft.width() - secondColumnStart, 20);
+    drawLeftAlignedStringWithOffset(String(Keyboard.isConnected()),        secondColumnStart, 5 + 0*d);
 }
 
 void setup()
@@ -99,7 +111,7 @@ void setup()
     Keyboard.begin();
     Mouse.begin();
 
-    report();
+    report_on_demand();
     delay(200);
 }
 
@@ -116,7 +128,11 @@ void loop()
     uint32_t time = millis();
     if (time - lastUpdated > 50)
     {
-        report();
+        report_regular();
+        if(report_needed)
+        {
+            report_on_demand();
+        }
         lastUpdated = time;
     }
     else
@@ -132,6 +148,7 @@ void encoderChanged(int32_t dir)
     Serial.println("enc " + String(dir) + " amp " + String(encoderDeltaAmplified) + " connected " + String(Keyboard.isConnected()) + " mode " + String(activeMode));
 
     modes[activeMode].encoderScrollHandler(Keyboard, Mouse, encoderDeltaAmplified);
+    report_needed = true;
     return;
     //report();
 }
@@ -154,6 +171,7 @@ void button1PresHandler()
     Serial.println("button 1 - prev menu");
     // switch mode back
     activeMode = (activeMode + filledModesCount - 1)%filledModesCount;
+    report_needed = true;
     resetEncoder();
 }
 
@@ -168,6 +186,7 @@ void button2PresHandler()
     Serial.println("button 2 - next menu");
     // switch mode
     activeMode = (activeMode + 1)%filledModesCount;
+    report_needed = true;
     resetEncoder();
 }
 
@@ -181,6 +200,7 @@ void buttonDownPresHandler()
     Serial.println("down");
     // switch mode back
     activeMode = (activeMode + filledModesCount - 1)%filledModesCount;
+    report_needed = true;
     resetEncoder();
 }
 void buttonLeftPresHandler()
@@ -193,5 +213,6 @@ void buttonRightPresHandler()
     Serial.println("right");
     // switch mode
     activeMode = (activeMode + 1)%filledModesCount;
+    report_needed = true;
     resetEncoder();
 }
