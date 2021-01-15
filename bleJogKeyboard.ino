@@ -12,18 +12,19 @@
 
 #include "modes/mode_definition.h"
 
-#include "modes/volume_mode.h"                // 1
-#include "modes/zoom_mode.h"                  // 2
-#include "modes/mouse_x_mode.h"               // 3
-#include "modes/mouse_y_mode.h"               // 4
-#include "modes/mouse_scroll_x_mode.h"        // 5
-#include "modes/mouse_scroll_y_mode.h"        // 6
-#include "modes/arrows_vertical_mode.h"       // 7
-#include "modes/arrows_horizontal_mode.h"     // 8
-#include "modes/undo_mode.h"                  // 9
-#include "modes/tab_switch_mode.h"            // 10
-#include "modes/mouse_drag_x_mode.h"          // 11
-#include "modes/mouse_drag_y_mode.h"          // 12
+#include "modes/volume_mode.h"                  // 1
+#include "modes/zoom_mode.h"                    // 2
+#include "modes/mouse_x_mode.h"                 // 3
+#include "modes/mouse_y_mode.h"                 // 4
+#include "modes/mouse_scroll_x_mode.h"          // 5
+#include "modes/mouse_scroll_y_mode.h"          // 6
+#include "modes/arrows_vertical_mode.h"         // 7
+#include "modes/arrows_horizontal_mode.h"       // 8
+#include "modes/undo_mode.h"                    // 9
+#include "modes/tab_switch_mode.h"              // 10
+#include "modes/alt_tab_mode.h"                 // 11
+#include "modes/mouse_drag_x_mode.h"            // 12
+#include "modes/mouse_drag_y_mode.h"            // 13
 
 const int32_t ModesCount = 100;
 ModeDefinition modes[ModesCount];
@@ -79,6 +80,7 @@ void setup()
     modes[filledModesCount++] = arrows_horizontal_mode_definition();
     modes[filledModesCount++] = arrows_vertical_mode_definition();
     modes[filledModesCount++] = tab_switch_mode_definition();
+    modes[filledModesCount++] = alt_tab_mode_definition();
     modes[filledModesCount++] = undo_mode_definition();
 
     activeMode = 0;
