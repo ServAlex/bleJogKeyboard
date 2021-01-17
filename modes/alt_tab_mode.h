@@ -1,5 +1,5 @@
 #ifndef alt_tab_mode_h
-#define alt_mode_h
+#define alt_tab_mode_h
 
 #include "mode_definition.h"
 #include "BleCombo.h"
