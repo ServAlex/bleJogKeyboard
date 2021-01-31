@@ -20,6 +20,10 @@
 #include "modes_classes/IMode.h"
 #include "modes_classes/ArrowsXMode.h"
 #include "modes_classes/ArrowsYMode.h"
+#include "modes_classes/MouseXMode.h"
+#include "modes_classes/MouseYMode.h"
+#include "modes_classes/MouseScrollXMode.h"
+#include "modes_classes/MouseScrollYMode.h"
 #include "modes_classes/ModeSelectionMode.h"
 #include "Controller.h"
 
@@ -31,11 +35,15 @@ void setup()
 {
     delay(1000);
 
-    int32_t modesCount = 2;
+    int32_t modesCount = 6;
     int32_t activeIndex = 0;
     IMode** modes = (IMode**)malloc(modesCount*sizeof(IMode*));
     modes[activeIndex++] = new ArrowsXMode();
     modes[activeIndex++] = new ArrowsYMode();
+    modes[activeIndex++] = new MouseXMode();
+    modes[activeIndex++] = new MouseYMode();
+    modes[activeIndex++] = new MouseScrollXMode();
+    modes[activeIndex++] = new MouseScrollYMode();
     IMode* modeSelectionMode = new ModeSelectionMode();
 
     Logger* logger = new Logger();

@@ -1,18 +1,18 @@
-#ifndef ArrowsXMode_h
-#define ArrowsXMode_h
+#ifndef MouseScrollYMode_h
+#define MouseScrollYMode_h
 
 #include "IMode.h"
 
-class ArrowsXMode: public IMode
+class MouseScrollYMode: public IMode
 {
     protected:
-        ~ArrowsXMode(){};
+        ~MouseScrollYMode(){};
     public:
-        ArrowsXMode()
+        MouseScrollYMode()
         {
-            name = "arrows X";
-            encoderAction = ArrowsXEncoderAction;
-            secondaryEncoderAction = ArrowsYEncoderAction;
+            name = "mouse scrl y";
+            encoderAction = MouseScrollYEncoderAction;
+            secondaryEncoderAction = MouseScrollXEncoderAction;
         };
 
         Action ActionNameForButton(int buttonPin)

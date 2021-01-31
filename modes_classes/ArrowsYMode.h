@@ -8,10 +8,6 @@ class ArrowsYMode: public IMode
     protected:
         ~ArrowsYMode(){};
     public:
-        String name;
-        Action encoderAction;
-        Action secondaryEncoderAction;
-
         ArrowsYMode()
         {
             name = "arrows Y";

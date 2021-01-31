@@ -1,18 +1,18 @@
-#ifndef ArrowsXMode_h
-#define ArrowsXMode_h
+#ifndef MouseYMode_h
+#define MouseYMode_h
 
 #include "IMode.h"
 
-class ArrowsXMode: public IMode
+class MouseYMode: public IMode
 {
     protected:
-        ~ArrowsXMode(){};
+        ~MouseYMode(){};
     public:
-        ArrowsXMode()
+        MouseYMode()
         {
-            name = "arrows X";
-            encoderAction = ArrowsXEncoderAction;
-            secondaryEncoderAction = ArrowsYEncoderAction;
+            name = "mouse Y";
+            encoderAction = MouseYEncoderAction;
+            secondaryEncoderAction = MouseXEncoderAction;
         };
 
         Action ActionNameForButton(int buttonPin)

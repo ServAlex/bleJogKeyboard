@@ -4,11 +4,17 @@
 enum Action
 {
     None,
+
     StartModeSelection,
     ConfirmModeSelection,
 
     ArrowsXEncoderAction,
     ArrowsYEncoderAction,
+    MouseXEncoderAction,
+    MouseYEncoderAction,
+    MouseScrollXEncoderAction,
+    MouseScrollYEncoderAction,
+
     ModeSelectionEncoderAction
 };
 
