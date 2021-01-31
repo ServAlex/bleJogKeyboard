@@ -55,10 +55,6 @@ void setup()
     buttonsSetup();
     encoderSetup();
 
-    //bleKeyboard.begin();
-    Keyboard.begin();
-    Mouse.begin();
-
     delay(200);
 }
 

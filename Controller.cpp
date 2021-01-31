@@ -54,7 +54,7 @@ void Controller::EncderChanged(int32_t newValue, int32_t diff)
     switch(action)
     {
         case ModeSelectionEncoderAction:
-            logger->Log("switch to diffirent mode");
+            logger->Log("switch to diffirent mode " + String(diff));
             for(int i = 0; i < abs(diff); ++i)
             {
                 if(diff>0)
@@ -70,7 +70,6 @@ void Controller::EncderChanged(int32_t newValue, int32_t diff)
                 viewModel->encoderValue = newValue;
                 viewModel->isInModeSelectionMode = true;
                 FillViewModel();
-                //
                 view->fullRedraw(viewModel);
             }
             break;
@@ -80,8 +79,8 @@ void Controller::EncderChanged(int32_t newValue, int32_t diff)
 
                 viewModel->encoderValue = newValue;
                 viewModel->isInModeSelectionMode = true;
+                executionController->ExecuteAction(action, diff);
                 FillViewModel();
-                //
                 view->fullRedraw(viewModel);
             break;
 
