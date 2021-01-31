@@ -9,10 +9,22 @@ class IMode
 {
     public:
         String name;
+        Action encoderAction;
+        Action secondaryEncoderAction;
+        
         virtual Action ActionNameForButton(int buttonPin){};
-        virtual Action ActionNameForEncoder(){};
-        virtual Action SecondaryActionNameForEncoder(){};
-        virtual String GetName(){};
+        virtual Action ActionNameForEncoder()
+        {
+            return encoderAction;
+        };
+        virtual Action SecondaryActionNameForEncoder()
+        {
+            return secondaryEncoderAction;
+        };
+        virtual String GetName()
+        {
+            return name;
+        };
         
         //IMode(){};
         //virtual ~IMode() {}
