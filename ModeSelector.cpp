@@ -19,6 +19,11 @@ IMode* ModeSelector::getCurrentMode()
     return modes[currentModeIndex];
 }
 
+IMode* ModeSelector::getSelectedMode()
+{
+    return modes[currentModeIndex];
+}
+
 IMode* ModeSelector::getNextMode()
 {
     return modes[(currentModeIndex + 1) % modesCount];

@@ -98,7 +98,7 @@ void Controller::FillViewModel()
     //viewModel->encoderValue = newValue;
     viewModel->modeIndex = modeSelector->getCurrentModeIndex() + 1;
     viewModel->modesCount = modeSelector->getModesCount();
-    viewModel->modeName = modeSelector->getCurrentMode()->GetName();
+    viewModel->modeName = modeSelector->getSelectedMode()->GetName();
     viewModel->nextModeName = "next";
     viewModel->previousModeName = "prev";
 }

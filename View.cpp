@@ -26,7 +26,7 @@ void View::fullRedraw(ViewModel* viewModel)
     // clear all
     backDraw();
 
-    if(flag = !flag)
+    if(viewModel->isInModeSelectionMode)
     {
         tft.drawCircle(5, 5, 5, TFT_YELLOW);
     }
@@ -36,16 +36,13 @@ void View::fullRedraw(ViewModel* viewModel)
     }
 
     // draw all
-    tft.setTextSize(2);
-    tft.drawString("m " + viewModel->modeName, tft.width()/2, 20);
+    tft.setTextSize(3);
+    tft.drawString(viewModel->modeName, 10, 30);
     logger->Log(viewModel->modeName);
     tft.setTextSize(2);
-    tft.drawString(String(viewModel->modeIndex) + "/" + String(viewModel->modesCount), tft.width()/2, 60);
+    tft.drawString(String(viewModel->modeIndex) + "/" + String(viewModel->modesCount), 10, 70);
     
-    tft.drawString(String(viewModel->encoderValue), tft.width()/2, 80);
-
-    //tft.setTextSize(4);
-    //drawString("smth", 10, 10);
+    tft.drawString(String(viewModel->encoderValue), 10, 90);
 }
 
 void View::minimalRedraw(ViewModel* viewModel)

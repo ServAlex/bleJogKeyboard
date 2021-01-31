@@ -17,7 +17,8 @@ class ModeSelector
 
     public:
         ModeSelector(Logger* aLogger, IMode** modes, int32_t modesCount, IMode* modeSelectionMode);
-        IMode* getCurrentMode();
+        IMode* getCurrentMode();    // mode from the array or mode selection mode
+        IMode* getSelectedMode();   // mode from the array
         IMode* getNextMode();
         IMode* getPreviousMode();
 
