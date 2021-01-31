@@ -11,6 +11,11 @@ ModeSelector::ModeSelector(Logger* aLogger, IMode** modes, int32_t modesCount, I
 
 IMode* ModeSelector::getCurrentMode()
 {
+    if(isInModeSelectionMode)
+    {
+        return modeSelectionMode;
+    }
+    
     return modes[currentModeIndex];
 }
 
@@ -46,11 +51,32 @@ void ModeSelector::switchToPreviousMode()
 
 void ModeSelector::switchToSelectionMode()
 {
-
+    isInModeSelectionMode = true;
 }
 
-void ModeSelector::switchToMode(IMode mode)
+void ModeSelector::completeSelectionMode()
 {
+    isInModeSelectionMode = false;
+}
 
+bool ModeSelector::isInSelectionMode()
+{
+    return isInModeSelectionMode;
+}
+
+void ModeSelector::switchToMode(IMode* mode)
+{
+    if(mode == modeSelectionMode)
+    {
+        isInModeSelectionMode = true;
+        return;
+    }
+
+    currentModeIndex = 0;
+    for(int i = 0; i<modesCount; i++)
+    {
+        if(modes[i] == mode)
+            currentModeIndex = i;
+    }
 }
 

@@ -1,8 +1,5 @@
 #include "Controller.h"
 
-bool isInModeSelectionMode = false;
-
-
 Controller::Controller(Logger* aLogger, 
                         ExecutionController* anExecutionController, 
                         ModeSelector* aModeSelector, 
@@ -26,8 +23,7 @@ void Controller::ButtonPressed(int32_t pinNumber)
     {
         case StartModeSelection:
             logger->Log("button for mode selection");
-            isInModeSelectionMode = true;
-            viewModel->isInModeSelectionMode = isInModeSelectionMode;
+            modeSelector->switchToSelectionMode();
             FillViewModel();
             view->fullRedraw(viewModel);
             // todo: start timer?
@@ -35,8 +31,8 @@ void Controller::ButtonPressed(int32_t pinNumber)
 
         case ConfirmModeSelection:
             logger->Log("button for confirming mode selection");
-            isInModeSelectionMode = false;
-            viewModel->isInModeSelectionMode = isInModeSelectionMode;
+            modeSelector->completeSelectionMode();
+            FillViewModel();
             view->fullRedraw(viewModel);
             break;
 
@@ -98,7 +94,7 @@ void Controller::EncderChanged(int32_t newValue, int32_t diff)
 
 void Controller::FillViewModel()
 {
-    viewModel->isInModeSelectionMode = isInModeSelectionMode;
+    viewModel->isInModeSelectionMode = modeSelector->isInSelectionMode();
     //viewModel->encoderValue = newValue;
     viewModel->modeIndex = modeSelector->getCurrentModeIndex() + 1;
     viewModel->modesCount = modeSelector->getModesCount();

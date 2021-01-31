@@ -19,6 +19,7 @@
 
 #include "modes_classes/IMode.h"
 #include "modes_classes/ArrowsXMode.h"
+#include "modes_classes/ArrowsYMode.h"
 #include "modes_classes/ModeSelectionMode.h"
 #include "Controller.h"
 
@@ -30,9 +31,11 @@ void setup()
 {
     delay(1000);
 
-    int32_t modesCount = 1;
+    int32_t modesCount = 2;
+    int32_t activeIndex = 0;
     IMode** modes = (IMode**)malloc(modesCount*sizeof(IMode*));
-    modes[0] = new ArrowsXMode();
+    modes[activeIndex++] = new ArrowsXMode();
+    modes[activeIndex++] = new ArrowsYMode();
     IMode* modeSelectionMode = new ModeSelectionMode();
 
     Logger* logger = new Logger();
@@ -47,21 +50,15 @@ void setup()
                             view,
                             viewModel);
 
-/*
-    Serial.begin(115200);
-    Serial.println("Start");
-*/
     lastUpdated = millis();
 
     buttonsSetup();
     encoderSetup();
-//    reportSetup();
 
     //bleKeyboard.begin();
     Keyboard.begin();
     Mouse.begin();
 
-//    report_on_demand();
     delay(200);
 }
 
