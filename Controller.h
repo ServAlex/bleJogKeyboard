@@ -24,6 +24,7 @@ class Controller
         Controller(Logger* aLogger, ExecutionController* anExecutionController, ModeSelector* aModeSelector, View* aView, ViewModel* aViewModel);
         void ButtonPressed(int32_t pinNumber);
         void EncderChanged(int32_t newValue, int32_t diff);
+        void RegularUpdate();
 };
 
 #endif

@@ -24,7 +24,15 @@
 #include "modes_classes/MouseYMode.h"
 #include "modes_classes/MouseScrollXMode.h"
 #include "modes_classes/MouseScrollYMode.h"
+
+#include "modes_classes/AltTabMode.h"
+#include "modes_classes/TabSwitchMode.h"
+#include "modes_classes/VolumeMode.h"
+#include "modes_classes/ZoomMode.h"
+#include "modes_classes/UndoMode.h"
+
 #include "modes_classes/ModeSelectionMode.h"
+
 #include "Controller.h"
 
 uint32_t lastUpdated = 0;
@@ -35,7 +43,7 @@ void setup()
 {
     delay(1000);
 
-    int32_t modesCount = 6;
+    int32_t modesCount = 11;
     int32_t activeIndex = 0;
     IMode** modes = (IMode**)malloc(modesCount*sizeof(IMode*));
     modes[activeIndex++] = new ArrowsXMode();
@@ -44,6 +52,14 @@ void setup()
     modes[activeIndex++] = new MouseYMode();
     modes[activeIndex++] = new MouseScrollXMode();
     modes[activeIndex++] = new MouseScrollYMode();
+
+    modes[activeIndex++] = new VolumeMode();
+
+    modes[activeIndex++] = new AltTabMode();
+    modes[activeIndex++] = new TabSwithcMode();
+    modes[activeIndex++] = new ZoomMode();
+    modes[activeIndex++] = new UndoMode();
+
     IMode* modeSelectionMode = new ModeSelectionMode();
 
     Logger* logger = new Logger();
@@ -70,7 +86,7 @@ void secondTask()
 {
     encoderLoop();
     // probably let the mode execute some regular action
-
+    controller->RegularUpdate();
     //modes[activeMode].fastLoopHandler(Keyboard, Mouse);
     //vTaskDelay(10);
 }

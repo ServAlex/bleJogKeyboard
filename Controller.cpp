@@ -91,6 +91,12 @@ void Controller::EncderChanged(int32_t newValue, int32_t diff)
     }
 }
 
+void Controller::RegularUpdate()
+{
+    Action action = modeSelector->getCurrentMode()->ActionNameForEncoder();
+    executionController->TryActionCompletion(action);
+}
+
 void Controller::FillViewModel()
 {
     viewModel->isInModeSelectionMode = modeSelector->isInSelectionMode();
