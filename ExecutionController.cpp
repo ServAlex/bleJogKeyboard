@@ -65,26 +65,7 @@ void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 		}
 		case TabSwitchEncoder:
 		{
-			Awaited2KeyComboWithModifier(parameter<0, KEY_LEFT_CTRL, KEY_TAB, KEY_LEFT_SHIFT, abs(parameter));
-/*
-			Keyboard.press(KEY_LEFT_CTRL);
-			if(parameter<0)
-			{
-				Keyboard.press(KEY_LEFT_SHIFT);
-			}
-			
-			for(int i = 0; i<abs(parameter); i++)
-			{
-				Keyboard.press(KEY_TAB);
-			}
-			if(parameter<0)
-			{
-				Keyboard.release(KEY_LEFT_SHIFT);
-			}
-
-			actionCompletionWaitingStartedTime = millis();
-			awaitingActionCompletion = true;
-*/
+			Awaited2KeyComboWithModifier(parameter<0, KEY_LEFT_CTRL, KEY_TAB, KEY_LEFT_SHIFT, abs(parameter), 40);
 			break;
 		}
 		case VolumeEncoder:
@@ -112,34 +93,12 @@ void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 		}
 		case AltTabEncoder:
 		{
-			Awaited2KeyComboWithModifier(parameter<0, KEY_LEFT_ALT, KEY_TAB, KEY_LEFT_SHIFT, abs(parameter));
-			/*
-			//if(!awaitingActionCompletion)
-			Keyboard.press(KEY_LEFT_ALT);
-
-			if(parameter<0)
-			{
-				Keyboard.press(KEY_LEFT_SHIFT);
-			}
-			
-			for(int i = 0; i<abs(parameter); i++)
-			{
-				Keyboard.press(KEY_TAB);
-			}
-
-			if(parameter<0)
-			{
-				Keyboard.release(KEY_LEFT_SHIFT);
-			}
-
-			actionCompletionWaitingStartedTime = millis();
-			awaitingActionCompletion = true;
-			*/
+			Awaited2KeyComboWithModifier(parameter<0, KEY_LEFT_ALT, KEY_TAB, KEY_LEFT_SHIFT, abs(parameter), 40);
 			break;
 		}
 		case UndoEncoder:
 		{
-			Awaited2KeyComboWithModifier(parameter<0, KEY_LEFT_CTRL, (uint8_t)'z', KEY_LEFT_SHIFT, abs(parameter));
+			Awaited2KeyComboWithModifier(parameter<0, KEY_LEFT_CTRL, (uint8_t)'z', KEY_LEFT_SHIFT, abs(parameter), 10);
 			break;
 		}
 		default:
@@ -147,7 +106,7 @@ void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 	}
 }
 
-void ExecutionController::Awaited2KeyComboWithModifier(bool positive, uint8_t baseKey, uint8_t secondaryKey, uint8_t modifierKey, int32_t times)
+void ExecutionController::Awaited2KeyComboWithModifier(bool positive, uint8_t baseKey, uint8_t secondaryKey, uint8_t modifierKey, int32_t times, int32_t delay)
 {
 	Keyboard.press(baseKey);
 
@@ -159,7 +118,7 @@ void ExecutionController::Awaited2KeyComboWithModifier(bool positive, uint8_t ba
 	for(int i = 0; i < times; i++)
 	{
 		Keyboard.write(secondaryKey);
-		vTaskDelay(10);
+		vTaskDelay(delay);
 	}
 
 	if(positive)

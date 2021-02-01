@@ -12,7 +12,7 @@ class ExecutionController
         bool awaitingActionCompletion;
         int32_t actionCompletionWaitingStartedTime;
         int32_t completionThreshold;
-        void Awaited2KeyComboWithModifier(bool positive, uint8_t baseKey, uint8_t secondaryKey, uint8_t modifierKey, int32_t times);
+        void Awaited2KeyComboWithModifier(bool positive, uint8_t baseKey, uint8_t secondaryKey, uint8_t modifierKey, int32_t times, int32_t delay);
 
     public:
         ExecutionController(Logger* aLogger);
