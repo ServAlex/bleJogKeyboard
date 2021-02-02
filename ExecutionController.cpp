@@ -101,6 +101,24 @@ void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 			Awaited2KeyComboWithModifier(parameter<0, KEY_LEFT_CTRL, (uint8_t)'z', KEY_LEFT_SHIFT, abs(parameter), 10);
 			break;
 		}
+		case MouseDragXEncoder:
+		{
+			Mouse.press(MOUSE_LEFT);
+			Mouse.move(parameter, 0, 0);
+
+			actionCompletionWaitingStartedTime = millis();
+			awaitingActionCompletion = true;
+			break;
+		}
+		case MouseDragYEncoder:
+		{
+			Mouse.press(MOUSE_LEFT);
+			Mouse.move(0, parameter, 0);
+
+			actionCompletionWaitingStartedTime = millis();
+			awaitingActionCompletion = true;
+			break;
+		}
 		default:
 			break;
 	}
@@ -157,6 +175,18 @@ void ExecutionController::TryActionCompletion(Action action)
 		case AltTabEncoder:
 		{
 			Keyboard.release(KEY_LEFT_ALT);
+			break;
+		}
+		case MouseDragXEncoder:
+		{
+			Mouse.release(MOUSE_LEFT);
+			Mouse.click(MOUSE_LEFT);
+			break;
+		}
+		case MouseDragYEncoder:
+		{
+			Mouse.release(MOUSE_LEFT);
+			Mouse.click(MOUSE_LEFT);
 			break;
 		}
 		default:

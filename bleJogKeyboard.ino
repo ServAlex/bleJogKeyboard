@@ -30,6 +30,8 @@
 #include "modes_classes/VolumeMode.h"
 #include "modes_classes/ZoomMode.h"
 #include "modes_classes/UndoMode.h"
+#include "modes_classes/MouseDragXMode.h"
+#include "modes_classes/MouseDragYMode.h"
 
 #include "modes_classes/ModeSelectionMode.h"
 
@@ -43,13 +45,15 @@ void setup()
 {
     delay(1000);
 
-    int32_t modesCount = 11;
+    int32_t modesCount = 30;
     int32_t activeIndex = 0;
     IMode** modes = (IMode**)malloc(modesCount*sizeof(IMode*));
     modes[activeIndex++] = new ArrowsXMode();
     modes[activeIndex++] = new ArrowsYMode();
     modes[activeIndex++] = new MouseXMode();
     modes[activeIndex++] = new MouseYMode();
+    modes[activeIndex++] = new MouseDragXMode();
+    modes[activeIndex++] = new MouseDragYMode();
     modes[activeIndex++] = new MouseScrollXMode();
     modes[activeIndex++] = new MouseScrollYMode();
 
@@ -64,7 +68,7 @@ void setup()
 
     Logger* logger = new Logger();
     ExecutionController* executionController = new ExecutionController(logger);
-    ModeSelector* modeSelector = new ModeSelector(logger, modes, modesCount, modeSelectionMode);
+    ModeSelector* modeSelector = new ModeSelector(logger, modes, activeIndex, modeSelectionMode);
     View* view = new View(logger);
     ViewModel* viewModel = new ViewModel();
 
