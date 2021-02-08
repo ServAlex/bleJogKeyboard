@@ -33,6 +33,11 @@
 #include "modes_classes/MouseDragXMode.h"
 #include "modes_classes/MouseDragYMode.h"
 
+#include "modes_classes/FusionOrbitXMode.h"
+#include "modes_classes/FusionOrbitYMode.h"
+#include "modes_classes/FusionOrbitXYMode.h"
+#include "modes_classes/FusionOrbitXYInvertedMode.h"
+
 #include "modes_classes/ModeSelectionMode.h"
 
 #include "Controller.h"
@@ -63,6 +68,11 @@ void setup()
     modes[activeIndex++] = new TabSwithcMode();
     modes[activeIndex++] = new ZoomMode();
     modes[activeIndex++] = new UndoMode();
+
+    modes[activeIndex++] = new FusionOrbitXMode();
+    modes[activeIndex++] = new FusionOrbitYMode();
+    modes[activeIndex++] = new FusionOrbitXYMode();
+    modes[activeIndex++] = new FusionOrbitXYInvertedMode();
 
     IMode* modeSelectionMode = new ModeSelectionMode();
 

@@ -16,16 +16,19 @@ enum Action
     MouseScrollXEncoderAction,
     MouseScrollYEncoderAction,
 
-    TabSwitchEncoder,
     VolumeEncoder,
+
+    // timed action
+    TabSwitchEncoder,
     ZooomEncoder,
     AltTabEncoder,
-
-    // pending without timed action
-    // timed action
     MouseDragXEncoder,
     MouseDragYEncoder,
     UndoEncoder,
+    FusionOrbitXEncoder,
+    FusionOrbitYEncoder,
+    FusionOrbitXYEncoder,
+    FusionOrbitXYInvertedEncoder,
 
     ModeSelectionEncoderAction
 };

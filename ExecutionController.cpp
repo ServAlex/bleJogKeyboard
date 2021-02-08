@@ -86,6 +86,7 @@ void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 			Mouse.move(0, 0, char(parameter), 0);
 
 			//Keyboard.release(KEY_LEFT_CTRL);
+			completionThreshold = 1000;
 			actionCompletionWaitingStartedTime = millis();
 			awaitingActionCompletion = true;
 
@@ -106,6 +107,7 @@ void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 			Mouse.press(MOUSE_LEFT);
 			Mouse.move(parameter, 0, 0);
 
+			completionThreshold = 1000;
 			actionCompletionWaitingStartedTime = millis();
 			awaitingActionCompletion = true;
 			break;
@@ -115,6 +117,38 @@ void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 			Mouse.press(MOUSE_LEFT);
 			Mouse.move(0, parameter, 0);
 
+			completionThreshold = 1000;
+			actionCompletionWaitingStartedTime = millis();
+			awaitingActionCompletion = true;
+			break;
+		}
+		case FusionOrbitXEncoder:
+		case FusionOrbitYEncoder:
+		case FusionOrbitXYEncoder:
+		case FusionOrbitXYInvertedEncoder:
+		{
+			Keyboard.press(KEY_LEFT_SHIFT);
+			Mouse.press(MOUSE_MIDDLE);
+			Keyboard.release(KEY_LEFT_SHIFT);
+
+			switch (action)
+			{
+				case FusionOrbitXEncoder:
+					Mouse.move(parameter, 0, 0);
+					break;
+				case FusionOrbitYEncoder:
+					Mouse.move(0, parameter, 0);
+					break;
+				case FusionOrbitXYEncoder:
+					Mouse.move(parameter, parameter, 0);
+					break;
+				case FusionOrbitXYInvertedEncoder:
+					Mouse.move(parameter, -parameter, 0);
+					break;
+			}
+			//Mouse.move(parameter, 0, 0);
+
+			completionThreshold = 400;
 			actionCompletionWaitingStartedTime = millis();
 			awaitingActionCompletion = true;
 			break;
@@ -144,6 +178,7 @@ void ExecutionController::Awaited2KeyComboWithModifier(bool positive, uint8_t ba
 		Keyboard.release(modifierKey);
 	}
 
+	completionThreshold = 1000;
 	actionCompletionWaitingStartedTime = millis();
 	awaitingActionCompletion = true;
 }
@@ -187,6 +222,17 @@ void ExecutionController::TryActionCompletion(Action action)
 		{
 			Mouse.release(MOUSE_LEFT);
 			Mouse.click(MOUSE_LEFT);
+			break;
+		}
+		case FusionOrbitXEncoder:
+		case FusionOrbitYEncoder:
+		case FusionOrbitXYEncoder:
+		case FusionOrbitXYInvertedEncoder:
+		{
+			//Keyboard.release(KEY_LEFT_SHIFT);
+
+			Mouse.release(MOUSE_MIDDLE);
+			//Mouse.click(MOUSE_MIDDLE);
 			break;
 		}
 		default:
