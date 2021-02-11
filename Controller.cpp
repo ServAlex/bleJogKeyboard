@@ -12,6 +12,9 @@ Controller::Controller(Logger* aLogger,
     this->view = aView;
     this->viewModel = aViewModel;
     this->viewModel->encoderValue = 0;
+
+    FillViewModel();
+    view->fullRedraw(viewModel);
 }
 
 void Controller::ButtonPressed(int32_t pinNumber)

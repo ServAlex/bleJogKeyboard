@@ -29,7 +29,7 @@ Action ModeSelectionMode::ActionNameForButton(int buttonPin)
 {
     switch (buttonPin)
     {
-    case 35:
+    case 13:
         return ConfirmModeSelection;
         break;
     

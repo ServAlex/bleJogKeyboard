@@ -8,7 +8,7 @@ int repeatStart = 1000;
 int repeatPeriod = 5;
 int resetPeriod = 10;
 
-int pins[but_count] = {0, 35, 25, 26, 12, 13, 32};
+int pins[but_count] = {0, 13, 25, 26, 12, 13, 32};
 long pressStartedTime[but_count] = {0};
 long lastRepeatedTime[but_count] = {0};
 long releasedTime[but_count] = {0};

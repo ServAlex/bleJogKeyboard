@@ -53,14 +53,6 @@ void setup()
     int32_t modesCount = 30;
     int32_t activeIndex = 0;
     IMode** modes = (IMode**)malloc(modesCount*sizeof(IMode*));
-    modes[activeIndex++] = new ArrowsXMode();
-    modes[activeIndex++] = new ArrowsYMode();
-    modes[activeIndex++] = new MouseXMode();
-    modes[activeIndex++] = new MouseYMode();
-    modes[activeIndex++] = new MouseDragXMode();
-    modes[activeIndex++] = new MouseDragYMode();
-    modes[activeIndex++] = new MouseScrollXMode();
-    modes[activeIndex++] = new MouseScrollYMode();
 
     modes[activeIndex++] = new VolumeMode();
 
@@ -69,11 +61,20 @@ void setup()
     modes[activeIndex++] = new ZoomMode();
     modes[activeIndex++] = new UndoMode();
 
+    modes[activeIndex++] = new ArrowsXMode();
+    modes[activeIndex++] = new ArrowsYMode();
+    modes[activeIndex++] = new MouseXMode();
+    modes[activeIndex++] = new MouseYMode();
+    modes[activeIndex++] = new MouseDragXMode();
+    modes[activeIndex++] = new MouseDragYMode();
+    modes[activeIndex++] = new MouseScrollXMode();
+    modes[activeIndex++] = new MouseScrollYMode();
+/*
     modes[activeIndex++] = new FusionOrbitXMode();
     modes[activeIndex++] = new FusionOrbitYMode();
     modes[activeIndex++] = new FusionOrbitXYMode();
     modes[activeIndex++] = new FusionOrbitXYInvertedMode();
-
+*/
     IMode* modeSelectionMode = new ModeSelectionMode();
 
     Logger* logger = new Logger();
@@ -153,7 +154,7 @@ void button1PresHandler()
 
 void button2PresHandler()
 {
-    controller->ButtonPressed(35);
+    controller->ButtonPressed(13);
 }
 
 void buttonUpPresHandler()

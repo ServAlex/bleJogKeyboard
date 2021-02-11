@@ -19,7 +19,7 @@ class FusionOrbitXMode: public IMode
         {
             switch (buttonPin)
             {
-            case 35:
+            case 13:
                 return StartModeSelection;
                 break;
             
