@@ -4,6 +4,8 @@
 
 #include "Action.h"
 #include "WString.h"
+#include "../ButtonPins.h"
+#include "../Logger.h"
 
 class IMode
 {
@@ -11,8 +13,21 @@ class IMode
         String name;
         Action encoderAction;
         Action secondaryEncoderAction;
+        Logger* logger;
         
-        virtual Action ActionNameForButton(int buttonPin){};
+        virtual Action ActionNameForButton(int buttonPin)
+        {
+            switch (buttonPin)
+            {
+                case ButtonModeSelect:
+                    return StartModeSelection;
+                    break;
+                
+                default:
+                    return None;
+                    break;
+            }
+        };
         virtual Action ActionNameForEncoder()
         {
             return encoderAction;

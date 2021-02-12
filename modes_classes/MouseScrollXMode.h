@@ -8,8 +8,9 @@ class MouseScrollXMode: public IMode
     protected:
         ~MouseScrollXMode(){};
     public:
-        MouseScrollXMode()
+        MouseScrollXMode(Logger* aLogger)
         {
+            logger = aLogger;
             name = "mouse scrl X";
             encoderAction = MouseScrollXEncoderAction;
             secondaryEncoderAction = MouseScrollYEncoderAction;
@@ -17,16 +18,20 @@ class MouseScrollXMode: public IMode
 
         Action ActionNameForButton(int buttonPin)
         {
-            switch (buttonPin)
+            Action baseAction = IMode::ActionNameForButton(buttonPin);
+            Action overrideAction = None;
+
+            switch(buttonPin)
             {
-            case 35:
-                return StartModeSelection;
-                break;
-            
-            default:
-                return None;
-                break;
+                default:
+                    overrideAction = None;
+                    break;
             }
+
+            if(overrideAction != None)
+                return overrideAction;
+
+            return baseAction;
         };
 };
 

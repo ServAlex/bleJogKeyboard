@@ -8,8 +8,9 @@ class MouseXMode: public IMode
     protected:
         ~MouseXMode(){};
     public:
-        MouseXMode()
+        MouseXMode(Logger* aLogger)
         {
+            logger = aLogger;
             name = "mouse X";
             encoderAction = MouseXEncoderAction;
             secondaryEncoderAction = MouseYEncoderAction;
@@ -17,16 +18,20 @@ class MouseXMode: public IMode
 
         Action ActionNameForButton(int buttonPin)
         {
-            switch (buttonPin)
+            Action baseAction = IMode::ActionNameForButton(buttonPin);
+            Action overrideAction = None;
+
+            switch(buttonPin)
             {
-            case 35:
-                return StartModeSelection;
-                break;
-            
-            default:
-                return None;
-                break;
+                default:
+                    overrideAction = None;
+                    break;
             }
+
+            if(overrideAction != None)
+                return overrideAction;
+
+            return baseAction;
         };
 };
 

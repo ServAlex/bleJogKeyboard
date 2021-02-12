@@ -8,8 +8,9 @@ class FusionOrbitXMode: public IMode
     protected:
         ~FusionOrbitXMode(){};
     public:
-        FusionOrbitXMode()
+        FusionOrbitXMode(Logger* aLogger)
         {
+            logger = aLogger;
             name = "Fusion orbit X";
             encoderAction = FusionOrbitXEncoder;
             secondaryEncoderAction = FusionOrbitYEncoder;
@@ -17,16 +18,20 @@ class FusionOrbitXMode: public IMode
 
         Action ActionNameForButton(int buttonPin)
         {
-            switch (buttonPin)
+            Action baseAction = IMode::ActionNameForButton(buttonPin);
+            Action overrideAction = None;
+
+            switch(buttonPin)
             {
-            case 35:
-                return StartModeSelection;
-                break;
-            
-            default:
-                return None;
-                break;
+                default:
+                    overrideAction = None;
+                    break;
             }
+
+            if(overrideAction != None)
+                return overrideAction;
+
+            return baseAction;
         };
 };
 

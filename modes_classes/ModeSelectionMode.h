@@ -6,7 +6,7 @@
 class ModeSelectionMode: public IMode
 {
     public:
-        ModeSelectionMode();
+        ModeSelectionMode(Logger* aLogger);
         String name = "mode sel";
 
         virtual Action ActionNameForButton(int buttonPin);
@@ -18,7 +18,10 @@ class ModeSelectionMode: public IMode
         ~ModeSelectionMode(){};
 };
 
-ModeSelectionMode::ModeSelectionMode() { }
+ModeSelectionMode::ModeSelectionMode(Logger* aLogger)
+{
+    logger = aLogger;
+}
 
 String ModeSelectionMode::GetName()
 {
@@ -27,17 +30,24 @@ String ModeSelectionMode::GetName()
 
 Action ModeSelectionMode::ActionNameForButton(int buttonPin)
 {
-    switch (buttonPin)
+    Action baseAction = IMode::ActionNameForButton(buttonPin);
+    Action overrideAction = None;
+
+    switch(buttonPin)
     {
-    case 35:
-        return ConfirmModeSelection;
-        break;
-    
-    default:
-        return None;
-        break;
+        case ButtonModeSelect:
+            overrideAction = ConfirmModeSelection;
+            break;
+        default:
+            overrideAction = None;
+            break;
     }
-}
+
+    if(overrideAction != None)
+        return overrideAction;
+
+    return baseAction;
+};
 
 Action ModeSelectionMode::ActionNameForEncoder()
 {

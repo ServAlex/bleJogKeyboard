@@ -8,8 +8,9 @@ class MouseDragXMode: public IMode
     protected:
         ~MouseDragXMode(){};
     public:
-        MouseDragXMode()
+        MouseDragXMode(Logger* aLogger)
         {
+            logger = aLogger;
             name = "mouse drag X";
             encoderAction = MouseDragXEncoder;
             secondaryEncoderAction = MouseDragYEncoder;
@@ -17,16 +18,20 @@ class MouseDragXMode: public IMode
 
         Action ActionNameForButton(int buttonPin)
         {
-            switch (buttonPin)
+            Action baseAction = IMode::ActionNameForButton(buttonPin);
+            Action overrideAction = None;
+
+            switch(buttonPin)
             {
-            case 35:
-                return StartModeSelection;
-                break;
-            
-            default:
-                return None;
-                break;
+                default:
+                    overrideAction = None;
+                    break;
             }
+
+            if(overrideAction != None)
+                return overrideAction;
+
+            return baseAction;
         };
 };
 

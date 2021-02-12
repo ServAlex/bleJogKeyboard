@@ -8,8 +8,9 @@ class UndoMode: public IMode
     protected:
         ~UndoMode(){};
     public:
-        UndoMode()
+        UndoMode(Logger* aLogger)
         {
+            logger = aLogger;
             name = "undo";
             encoderAction = UndoEncoder;
             secondaryEncoderAction = UndoEncoder;
@@ -17,16 +18,20 @@ class UndoMode: public IMode
 
         Action ActionNameForButton(int buttonPin)
         {
-            switch (buttonPin)
+            Action baseAction = IMode::ActionNameForButton(buttonPin);
+            Action overrideAction = None;
+
+            switch(buttonPin)
             {
-            case 35:
-                return StartModeSelection;
-                break;
-            
-            default:
-                return None;
-                break;
+                default:
+                    overrideAction = None;
+                    break;
             }
+
+            if(overrideAction != None)
+                return overrideAction;
+
+            return baseAction;
         };
 };
 

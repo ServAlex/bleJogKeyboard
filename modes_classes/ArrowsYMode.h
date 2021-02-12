@@ -8,8 +8,9 @@ class ArrowsYMode: public IMode
     protected:
         ~ArrowsYMode(){};
     public:
-        ArrowsYMode()
+        ArrowsYMode(Logger* aLogger)
         {
+            logger = aLogger;
             name = "arrows Y";
             encoderAction = ArrowsYEncoderAction;
             secondaryEncoderAction = ArrowsXEncoderAction;
@@ -17,16 +18,20 @@ class ArrowsYMode: public IMode
 
         Action ActionNameForButton(int buttonPin)
         {
-            switch (buttonPin)
+            Action baseAction = IMode::ActionNameForButton(buttonPin);
+            Action overrideAction = None;
+
+            switch(buttonPin)
             {
-            case 35:
-                return StartModeSelection;
-                break;
-            
-            default:
-                return None;
-                break;
+                default:
+                    overrideAction = None;
+                    break;
             }
+
+            if(overrideAction != None)
+                return overrideAction;
+
+            return baseAction;
         };
 };
 

@@ -7,6 +7,8 @@ ModeSelector::ModeSelector(Logger* aLogger, IMode** modes, int32_t modesCount, I
     this->modesCount = modesCount;
     this->modeSelectionMode = modeSelectionMode;
     currentModeIndex = 0;
+    isInModeSelectionMode = false;
+
 }
 
 IMode* ModeSelector::getCurrentMode()

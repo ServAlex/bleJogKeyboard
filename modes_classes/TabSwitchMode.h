@@ -8,8 +8,9 @@ class TabSwithcMode: public IMode
     protected:
         ~TabSwithcMode(){};
     public:
-        TabSwithcMode()
+        TabSwithcMode(Logger* aLogger)
         {
+            logger = aLogger;
             name = "tab swithc";
             encoderAction = TabSwitchEncoder;
             secondaryEncoderAction = TabSwitchEncoder;
@@ -17,16 +18,20 @@ class TabSwithcMode: public IMode
 
         Action ActionNameForButton(int buttonPin)
         {
-            switch (buttonPin)
+            Action baseAction = IMode::ActionNameForButton(buttonPin);
+            Action overrideAction = None;
+
+            switch(buttonPin)
             {
-            case 35:
-                return StartModeSelection;
-                break;
-            
-            default:
-                return None;
-                break;
+                default:
+                    overrideAction = None;
+                    break;
             }
+
+            if(overrideAction != None)
+                return overrideAction;
+
+            return baseAction;
         };
 };
 

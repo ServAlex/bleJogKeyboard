@@ -9,13 +9,6 @@
 //#include "led_part.h"
 #include "parts/encoder_part.h"
 //#include "parts/display_part.h"
-/*
-#include "Logger.h"
-#include "ExecutionController.h"
-#include "ModeSelector.h"
-#include "ViewModel.h"
-#include "View.h"
-*/
 
 #include "modes_classes/IMode.h"
 #include "modes_classes/ArrowsXMode.h"
@@ -50,33 +43,37 @@ void setup()
 {
     delay(1000);
 
+    Logger* logger = new Logger();
+
     int32_t modesCount = 30;
     int32_t activeIndex = 0;
     IMode** modes = (IMode**)malloc(modesCount*sizeof(IMode*));
-    modes[activeIndex++] = new ArrowsXMode();
-    modes[activeIndex++] = new ArrowsYMode();
-    modes[activeIndex++] = new MouseXMode();
-    modes[activeIndex++] = new MouseYMode();
-    modes[activeIndex++] = new MouseDragXMode();
-    modes[activeIndex++] = new MouseDragYMode();
-    modes[activeIndex++] = new MouseScrollXMode();
-    modes[activeIndex++] = new MouseScrollYMode();
 
-    modes[activeIndex++] = new VolumeMode();
+    modes[activeIndex++] = new VolumeMode(logger);
 
-    modes[activeIndex++] = new AltTabMode();
-    modes[activeIndex++] = new TabSwithcMode();
-    modes[activeIndex++] = new ZoomMode();
-    modes[activeIndex++] = new UndoMode();
+    modes[activeIndex++] = new AltTabMode(logger);
+    modes[activeIndex++] = new TabSwithcMode(logger);
+    modes[activeIndex++] = new ZoomMode(logger);
+    modes[activeIndex++] = new UndoMode(logger);
 
-    modes[activeIndex++] = new FusionOrbitXMode();
-    modes[activeIndex++] = new FusionOrbitYMode();
-    modes[activeIndex++] = new FusionOrbitXYMode();
-    modes[activeIndex++] = new FusionOrbitXYInvertedMode();
+    modes[activeIndex++] = new ArrowsXMode(logger);
+    modes[activeIndex++] = new ArrowsYMode(logger);
+    modes[activeIndex++] = new MouseXMode(logger);
+    modes[activeIndex++] = new MouseYMode(logger);
+    modes[activeIndex++] = new MouseDragXMode(logger);
+    modes[activeIndex++] = new MouseDragYMode(logger);
+    modes[activeIndex++] = new MouseScrollXMode(logger);
+    modes[activeIndex++] = new MouseScrollYMode(logger);
 
-    IMode* modeSelectionMode = new ModeSelectionMode();
+/*
+    modes[activeIndex++] = new FusionOrbitXMode(logger);
+    modes[activeIndex++] = new FusionOrbitYMode(logger);
+    modes[activeIndex++] = new FusionOrbitXYMode(logger);
+    modes[activeIndex++] = new FusionOrbitXYInvertedMode(logger);
+*/
 
-    Logger* logger = new Logger();
+    IMode* modeSelectionMode = new ModeSelectionMode(logger);
+
     ExecutionController* executionController = new ExecutionController(logger);
     ModeSelector* modeSelector = new ModeSelector(logger, modes, activeIndex, modeSelectionMode);
     View* view = new View(logger);
@@ -102,7 +99,7 @@ void secondTask()
     // probably let the mode execute some regular action
     controller->RegularUpdate();
     //modes[activeMode].fastLoopHandler(Keyboard, Mouse);
-    //vTaskDelay(10);
+    vTaskDelay(10);
 }
 
 void loop()
@@ -141,11 +138,11 @@ void encoderChanged(int32_t dir)
 
 // buttons
 
-void buttonEncoderPresHandler()
+void numberedButtonHandler(int32_t button)
 {
-    //controller->ButtonPressed(asdf;lkj);
+    controller->ButtonPressed(button);
 }
-
+/*
 void button1PresHandler()
 {
     controller->ButtonPressed(0);
@@ -155,20 +152,4 @@ void button2PresHandler()
 {
     controller->ButtonPressed(35);
 }
-
-void buttonUpPresHandler()
-{
-    //controller->ButtonPressed();
-}
-void buttonDownPresHandler()
-{
-    //controller->ButtonPressed();
-}
-void buttonLeftPresHandler()
-{
-    //controller->ButtonPressed();
-}
-void buttonRightPresHandler()
-{
-    //controller->ButtonPressed();
-}
+*/
