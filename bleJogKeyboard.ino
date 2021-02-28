@@ -1,113 +1,108 @@
 
 // downloaded https://github.com/ServAlex/ESP32-BLE-Combo and manually extracted to a library folder next to fastled
 //#include "BleKeyboard.h"
-#include "BleCombo.h"
+// moved #include "BleCombo.h"
 
 // my libs
-#include "display_part.h"
-#include "buttons_part.h"
+#include "parts/buttons_part.h"
 //#include "wifi_part.h"
 //#include "led_part.h"
-#include "encoder_part.h"
+#include "parts/encoder_part.h"
+//#include "parts/display_part.h"
 
-#include "modes/mode_definition.h"
+#include "modes_classes/IMode.h"
+#include "modes_classes/ArrowsXMode.h"
+#include "modes_classes/ArrowsYMode.h"
+#include "modes_classes/MouseXMode.h"
+#include "modes_classes/MouseYMode.h"
+#include "modes_classes/MouseScrollXMode.h"
+#include "modes_classes/MouseScrollYMode.h"
 
-#include "modes/volume_mode.h"                  // 1
-#include "modes/zoom_mode.h"                    // 2
-#include "modes/mouse_x_mode.h"                 // 3
-#include "modes/mouse_y_mode.h"                 // 4
-#include "modes/mouse_scroll_x_mode.h"          // 5
-#include "modes/mouse_scroll_y_mode.h"          // 6
-#include "modes/arrows_vertical_mode.h"         // 7
-#include "modes/arrows_horizontal_mode.h"       // 8
-#include "modes/undo_mode.h"                    // 9
-#include "modes/tab_switch_mode.h"              // 10
-#include "modes/alt_tab_mode.h"                 // 11
-#include "modes/mouse_drag_x_mode.h"            // 12
-#include "modes/mouse_drag_y_mode.h"            // 13
+#include "modes_classes/AltTabMode.h"
+#include "modes_classes/TabSwitchMode.h"
+#include "modes_classes/VolumeMode.h"
+#include "modes_classes/ZoomMode.h"
+#include "modes_classes/UndoMode.h"
+#include "modes_classes/MouseDragXMode.h"
+#include "modes_classes/MouseDragYMode.h"
 
-const int32_t ModesCount = 100;
-ModeDefinition modes[ModesCount];
-int32_t activeMode;
-int32_t filledModesCount = 0;
+#include "modes_classes/FusionOrbitXMode.h"
+#include "modes_classes/FusionOrbitYMode.h"
+#include "modes_classes/FusionOrbitXYMode.h"
+#include "modes_classes/FusionOrbitXYInvertedMode.h"
 
-int currentMenu = 0;
-int menuCount = 3;
+#include "modes_classes/ModeSelectionMode.h"
+
+#include "IRefresher.h"
+#include "Controller.h"
 
 uint32_t lastUpdated = 0;
 
-void reportSetup()
-{
-    tft.setTextColor(TFT_GREEN, TFT_BLACK);
-    tft.setTextDatum(TL_DATUM);
-
-    int d = 25;
-
-    drawLeftAlignedStringWithOffset("connect",      20, 5 + 0*d);
-    drawLeftAlignedStringWithOffset("mode",         20, 5 + 1*d);
-    drawLeftAlignedStringWithOffset("encoder",      20, 5 + 2*d);
-}
-
-void report()
-{
-    int d = 25;
-    int secondColumnStart = 140;
-    //clearScreen();
-    clearRect(0, 0, 10, tft.height());
-    clearRect(secondColumnStart, 0, tft.width() - secondColumnStart, tft.height());
-    
-    drawLeftAlignedStringWithOffset(String(Keyboard.isConnected()),        secondColumnStart, 5 + 0*d);
-    drawLeftAlignedStringWithOffset(modes[activeMode].modeShortName(),     secondColumnStart, 5 + 1*d);
-    drawLeftAlignedStringWithOffset(String(encoderValue),                  secondColumnStart, 5 + 2*d);
-
-    //tft.fillCircle(5, tft.height()/2-d*2 + currentMenu*d, 3, TFT_GREEN);
-    tft.fillCircle(5, 15 + currentMenu*d, 3, TFT_GREEN);
-}
+Controller* controller;
 
 void setup()
 {
     delay(1000);
 
-    filledModesCount = 0;
-    modes[filledModesCount++] = volume_mode_definition();
-    modes[filledModesCount++] = zoom_mode_definition();
-    modes[filledModesCount++] = mouse_x_mode_definition();
-    modes[filledModesCount++] = mouse_y_mode_definition();
-    modes[filledModesCount++] = mouse_drag_x_mode_definition();
-    modes[filledModesCount++] = mouse_drag_y_mode_definition();
-    modes[filledModesCount++] = mouse_scroll_x_mode_definition();
-    modes[filledModesCount++] = mouse_scroll_y_mode_definition();
-    modes[filledModesCount++] = arrows_horizontal_mode_definition();
-    modes[filledModesCount++] = arrows_vertical_mode_definition();
-    modes[filledModesCount++] = tab_switch_mode_definition();
-    modes[filledModesCount++] = alt_tab_mode_definition();
-    modes[filledModesCount++] = undo_mode_definition();
+    Logger* logger = new Logger();
 
-    activeMode = 0;
+    int32_t modesCount = 30;
+    int32_t activeIndex = 0;
 
-    Serial.begin(115200);
-    Serial.println("Start");
+    IMode** modes = (IMode**)malloc(modesCount*sizeof(IMode*));
+    IMode* modeSelectionMode = new ModeSelectionMode(logger);
+    ModeSelector* modeSelector = new ModeSelector(logger, modes, 13, modeSelectionMode);
+
+    modes[activeIndex++] = modeSelector->volumeMode = new VolumeMode(logger);
+
+    modes[activeIndex++] = modeSelector->altTabMode = new AltTabMode(logger);
+    modes[activeIndex++] = modeSelector->tabSwitchMode =  new TabSwithcMode(logger);
+    modes[activeIndex++] = modeSelector->zoomMode = new ZoomMode(logger);
+    modes[activeIndex++] = modeSelector->undoMode = new UndoMode(logger);
+
+    modes[activeIndex++] = modeSelector->arrowsXMode = new ArrowsXMode(logger);
+    modes[activeIndex++] = modeSelector->arrowsYMode = new ArrowsYMode(logger);
+    modes[activeIndex++] = modeSelector->mouseXMode = new MouseXMode(logger);
+    modes[activeIndex++] = modeSelector->mouseYMode = new MouseYMode(logger);
+    modes[activeIndex++] = modeSelector->mouseDragXMode = new MouseDragXMode(logger);
+    modes[activeIndex++] = modeSelector->mouseDragYMode = new MouseDragYMode(logger);
+    modes[activeIndex++] = modeSelector->mouseScrollXMode = new MouseScrollXMode(logger);
+    modes[activeIndex++] = modeSelector->mouseScrollYMode = new MouseScrollYMode(logger);
+
+/*
+    modes[activeIndex++] = modeSelector->fusionOrbitXMode = new FusionOrbitXMode(logger);
+    modes[activeIndex++] = modeSelector->fusionOrbitYMode = new FusionOrbitYMode(logger);
+    modes[activeIndex++] = new FusionOrbitXYMode(logger);
+    modes[activeIndex++] = new FusionOrbitXYInvertedMode(logger);
+*/
+
+
+    ExecutionController* executionController = new ExecutionController(logger, modeSelector);
+    View* view = new View(logger);
+    ViewModel* viewModel = new ViewModel();
+
+    controller = new Controller(logger, 
+                            executionController,
+                            modeSelector,
+                            view,
+                            viewModel);
+    executionController->SetRefresher((IRefresher*)controller);
 
     lastUpdated = millis();
 
-    displaySetup();
     buttonsSetup();
     encoderSetup();
-    reportSetup();
 
-    //bleKeyboard.begin();
-    Keyboard.begin();
-    Mouse.begin();
-
-    report();
     delay(200);
 }
 
 void secondTask()
 {
     encoderLoop();
-    modes[activeMode].fastLoopHandler(Keyboard, Mouse);
-    //vTaskDelay(10);
+    // probably let the mode execute some regular action
+    controller->RegularUpdate();
+    //modes[activeMode].fastLoopHandler(Keyboard, Mouse);
+    vTaskDelay(10);
 }
 
 void loop()
@@ -116,8 +111,15 @@ void loop()
     uint32_t time = millis();
     if (time - lastUpdated > 50)
     {
-        report();
+        //report_regular();
+        /*
+        if(report_needed)
+        {
+            report_on_demand();
+        }
+        */
         lastUpdated = time;
+        vTaskDelay(10); // while there are no actions in this if
     }
     else
     {
@@ -125,73 +127,32 @@ void loop()
     }
 }
 
-
 void encoderChanged(int32_t dir)
 {
-    //Serial.println("d " + String(dir) + " enc " + String(encoderValue) + " amp " + String(encoderValueAmplified) + " ampD " + String(encoderDeltaAmplified));
+    /*
     Serial.println("enc " + String(dir) + " amp " + String(encoderDeltaAmplified) + " connected " + String(Keyboard.isConnected()) + " mode " + String(activeMode));
-
     modes[activeMode].encoderScrollHandler(Keyboard, Mouse, encoderDeltaAmplified);
+    report_needed = true;
+    */
+    controller->EncderChanged(encoderValue, encoderDeltaAmplified);
     return;
     //report();
 }
 
 // buttons
 
-void buttonEncoderPresHandler()
+void numberedButtonHandler(int32_t button)
 {
-    modes[activeMode].encoderClickHandler(Keyboard, Mouse);
+    controller->ButtonPressed(button);
 }
-
+/*
 void button1PresHandler()
 {
-    /*
-    Serial.println("button 1");
-    currentMenu = ++currentMenu % menuCount;
-    report();
-    */
-
-    Serial.println("button 1 - prev menu");
-    // switch mode back
-    activeMode = (activeMode + filledModesCount - 1)%filledModesCount;
-    resetEncoder();
+    controller->ButtonPressed(0);
 }
 
 void button2PresHandler()
 {
-    /*
-    Serial.println("button 2");
-    currentMenu = ++currentMenu % menuCount;
-    report();
-    */
-
-    Serial.println("button 2 - next menu");
-    // switch mode
-    activeMode = (activeMode + 1)%filledModesCount;
-    resetEncoder();
+    controller->ButtonPressed(35);
 }
-
-void buttonUpPresHandler()
-{
-    Serial.println("up");
-    modes[activeMode].primaryHandler(Keyboard, Mouse);
-}
-void buttonDownPresHandler()
-{
-    Serial.println("down");
-    // switch mode back
-    activeMode = (activeMode + filledModesCount - 1)%filledModesCount;
-    resetEncoder();
-}
-void buttonLeftPresHandler()
-{
-    Serial.println("left");
-    modes[activeMode].secondaryHandler(Keyboard, Mouse);
-}
-void buttonRightPresHandler()
-{
-    Serial.println("right");
-    // switch mode
-    activeMode = (activeMode + 1)%filledModesCount;
-    resetEncoder();
-}
+*/

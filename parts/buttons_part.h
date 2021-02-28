@@ -2,19 +2,38 @@
 #define buttons_part_h
 
 #include <Wire.h>
-#define but_count 7
+#include "../ButtonPins.h"
+#define but_count 9
+//#define but_count 12
 
 int repeatStart = 1000;
 int repeatPeriod = 5;
 int resetPeriod = 10;
 
-int pins[but_count] = {0, 35, 25, 26, 12, 13, 32};
+int32_t pins[but_count] = 
+{
+    
+    Button11, 
+//    Button12, 
+//    Button13, 
+//    Button14, 
+    
+    Button21, 
+    Button22, 
+    Button23, 
+    Button24, 
+    Button31, 
+    Button32, 
+    Button33, 
+    Button34
+};
+
 long pressStartedTime[but_count] = {0};
 long lastRepeatedTime[but_count] = {0};
 long releasedTime[but_count] = {0};
 //bool isPressed2[but_count] = {false, false, false, false, false, false};
 
-bool buttonIsInPressedState[but_count] = {false, false, false, false, false, false, false};
+bool buttonIsInPressedState[but_count] = {false};
 
 // task
 TaskHandle_t core0Task;
@@ -36,33 +55,18 @@ void core0TaskCode( void * pvParameters )
     } 
 }
 
-void button1PresHandler();
-void button2PresHandler();
-void buttonUpPresHandler();
-void buttonDownPresHandler();
-void buttonLeftPresHandler();
-void buttonRightPresHandler();
-void buttonEncoderPresHandler();
-//void bothButtonsPressHandler();
-
-
-typedef void (*HandlerList[])();
-
-HandlerList handlers = {
-    button1PresHandler,
-    button2PresHandler,
-    buttonDownPresHandler,
-    buttonRightPresHandler,
-    buttonLeftPresHandler,
-    buttonUpPresHandler,
-    buttonEncoderPresHandler
-    //bothButtonsPressHandler,
-};
+void numberedButtonHandler(int32_t button);
 
 void buttonsSetup()
 {
     for(int i = 0; i<but_count; i++)
+    {
+
         pinMode(pins[i], INPUT_PULLUP);
+        buttonIsInPressedState[i] = false;
+    }
+
+    //for(int i = 0; i<but_count; i++)
 
     xTaskCreatePinnedToCore(
                         core0TaskCode,      // Task function.
@@ -77,15 +81,20 @@ void buttonsSetup()
 void readButtons()
 {
     long time = millis();
-
     int vals[but_count] = {0};
+    bool needToFireEvent[but_count];
+
     for(int i = 0; i<but_count; i++)
+    {
         vals[i] = digitalRead(pins[i]);
+        needToFireEvent[i] = false;
+    }
 
     vals[0] = HIGH;
-
-    bool needToFireEvent[but_count] = {false, false, false, false, false, false, false};
-
+/*j
+     = {false, false, false, false, false, false, 
+                                        false, false, false, false, false, false};
+*/
     for(int i = 0; i < but_count; i++)
     {
         if (vals[i] != HIGH) 
@@ -146,7 +155,8 @@ void readButtons()
         if(i == 0)
             continue;
         if(needToFireEvent[i])
-            handlers[i]();
+            numberedButtonHandler(pins[i]);
+            //handlers[i]();
     }
 }
 
