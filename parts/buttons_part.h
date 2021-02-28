@@ -3,7 +3,7 @@
 
 #include <Wire.h>
 #include "../ButtonPins.h"
-#define but_count 8
+#define but_count 9
 //#define but_count 12
 
 int repeatStart = 1000;
@@ -12,12 +12,12 @@ int resetPeriod = 10;
 
 int32_t pins[but_count] = 
 {
-    /*
+    
     Button11, 
-    Button12, 
-    Button13, 
-    Button14, 
-    */
+//    Button12, 
+//    Button13, 
+//    Button14, 
+    
     Button21, 
     Button22, 
     Button23, 

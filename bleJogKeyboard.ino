@@ -47,35 +47,36 @@ void setup()
 
     int32_t modesCount = 30;
     int32_t activeIndex = 0;
+
     IMode** modes = (IMode**)malloc(modesCount*sizeof(IMode*));
+    IMode* modeSelectionMode = new ModeSelectionMode(logger);
+    ModeSelector* modeSelector = new ModeSelector(logger, modes, 13, modeSelectionMode);
 
-    modes[activeIndex++] = new VolumeMode(logger);
+    modes[activeIndex++] = modeSelector->volumeMode = new VolumeMode(logger);
 
-    modes[activeIndex++] = new AltTabMode(logger);
-    modes[activeIndex++] = new TabSwithcMode(logger);
-    modes[activeIndex++] = new ZoomMode(logger);
-    modes[activeIndex++] = new UndoMode(logger);
+    modes[activeIndex++] = modeSelector->altTabMode = new AltTabMode(logger);
+    modes[activeIndex++] = modeSelector->tabSwitchMode =  new TabSwithcMode(logger);
+    modes[activeIndex++] = modeSelector->zoomMode = new ZoomMode(logger);
+    modes[activeIndex++] = modeSelector->undoMode = new UndoMode(logger);
 
-    modes[activeIndex++] = new ArrowsXMode(logger);
-    modes[activeIndex++] = new ArrowsYMode(logger);
-    modes[activeIndex++] = new MouseXMode(logger);
-    modes[activeIndex++] = new MouseYMode(logger);
-    modes[activeIndex++] = new MouseDragXMode(logger);
-    modes[activeIndex++] = new MouseDragYMode(logger);
-    modes[activeIndex++] = new MouseScrollXMode(logger);
-    modes[activeIndex++] = new MouseScrollYMode(logger);
+    modes[activeIndex++] = modeSelector->arrowsXMode = new ArrowsXMode(logger);
+    modes[activeIndex++] = modeSelector->arrowsYMode = new ArrowsYMode(logger);
+    modes[activeIndex++] = modeSelector->mouseXMode = new MouseXMode(logger);
+    modes[activeIndex++] = modeSelector->mouseYMode = new MouseYMode(logger);
+    modes[activeIndex++] = modeSelector->mouseDragXMode = new MouseDragXMode(logger);
+    modes[activeIndex++] = modeSelector->mouseDragYMode = new MouseDragYMode(logger);
+    modes[activeIndex++] = modeSelector->mouseScrollXMode = new MouseScrollXMode(logger);
+    modes[activeIndex++] = modeSelector->mouseScrollYMode = new MouseScrollYMode(logger);
 
 /*
-    modes[activeIndex++] = new FusionOrbitXMode(logger);
-    modes[activeIndex++] = new FusionOrbitYMode(logger);
+    modes[activeIndex++] = modeSelector->fusionOrbitXMode = new FusionOrbitXMode(logger);
+    modes[activeIndex++] = modeSelector->fusionOrbitYMode = new FusionOrbitYMode(logger);
     modes[activeIndex++] = new FusionOrbitXYMode(logger);
     modes[activeIndex++] = new FusionOrbitXYInvertedMode(logger);
 */
 
-    IMode* modeSelectionMode = new ModeSelectionMode(logger);
 
-    ExecutionController* executionController = new ExecutionController(logger);
-    ModeSelector* modeSelector = new ModeSelector(logger, modes, activeIndex, modeSelectionMode);
+    ExecutionController* executionController = new ExecutionController(logger, modeSelector);
     View* view = new View(logger);
     ViewModel* viewModel = new ViewModel();
 

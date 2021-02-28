@@ -23,6 +23,20 @@ class MouseDragXMode: public IMode
 
             switch(buttonPin)
             {
+                case Button34:
+                    overrideAction = SwitchModeToMouseDragYAction;
+                    break;
+
+                case Button24:
+                    overrideAction = SwitchModeToMouseXAction;
+                    break;
+                case Button23:
+                    overrideAction = SwitchModeToMouseScrollXAction;
+                    break;
+                case Button22:
+                    overrideAction = SwitchModeToMouseDragXAction;
+                    break;
+
                 default:
                     overrideAction = None;
                     break;

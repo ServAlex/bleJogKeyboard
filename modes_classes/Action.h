@@ -25,12 +25,35 @@ enum Action
     MouseDragXEncoder,
     MouseDragYEncoder,
     UndoEncoder,
+    UndoUnixEncoder,
     FusionOrbitXEncoder,
     FusionOrbitYEncoder,
     FusionOrbitXYEncoder,
     FusionOrbitXYInvertedEncoder,
 
-    ModeSelectionEncoderAction
+    ModeSelectionEncoderAction,
+
+    // actions for buttons
+
+    PlayPouseAction,
+    PreviousTrackAction,
+    NextTrackAction,
+    MuteAction,
+
+    SwitchUndoStyleAction,
+
+    SwitchModeToMouseXAction,
+    SwitchModeToMouseYAction,
+    SwitchModeToMouseScrollXAction,
+    SwitchModeToMouseScrollYAction,
+    SwitchModeToMouseDragXAction,
+    SwitchModeToMouseDragYAction,
+
+    SwitchModeToArrowsXAction,
+    SwitchModeToArrowsYAction,
+
+    SwithcModeToFusionXModeAction,
+    SwithcModeToFusionYModeAction
 };
 
 #endif

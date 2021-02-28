@@ -23,6 +23,19 @@ class VolumeMode: public IMode
 
             switch(buttonPin)
             {
+                case Button34:
+                    overrideAction = PlayPouseAction;
+                    break;
+                case Button23:
+                    overrideAction = NextTrackAction;
+                    break;
+                case Button33:
+                case Button24:
+                    overrideAction = PreviousTrackAction;
+                    break;
+                case Button32:
+                    overrideAction = MuteAction;
+                    break;
                 default:
                     overrideAction = None;
                     break;

@@ -23,6 +23,9 @@ class FusionOrbitYMode: public IMode
 
             switch(buttonPin)
             {
+                case Button34:
+                    overrideAction = SwithcModeToFusionXModeAction;
+                    break;
                 default:
                     overrideAction = None;
                     break;

@@ -1,11 +1,12 @@
 #include "ExecutionController.h"
 
-ExecutionController::ExecutionController(Logger* aLogger)
+ExecutionController::ExecutionController(Logger* aLogger, ModeSelector* aModeSelector)
 {
 	this->logger = aLogger;
 	awaitingActionCompletion = false;
 	actionCompletionWaitingStartedTime = 0;
 	completionThreshold = 1000;
+	modeSelector = aModeSelector;
 
 	Keyboard.begin();
 	Mouse.begin();
@@ -153,6 +154,54 @@ void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 			awaitingActionCompletion = true;
 			break;
 		}
+		case MuteAction:
+			Keyboard.write(KEY_MEDIA_MUTE);
+			break;
+		case PlayPouseAction:
+			Keyboard.write(KEY_MEDIA_PLAY_PAUSE);
+			break;
+		case PreviousTrackAction:
+			Keyboard.write(KEY_MEDIA_PREVIOUS_TRACK);
+			break;
+		case NextTrackAction:
+			Keyboard.write(KEY_MEDIA_NEXT_TRACK);
+			break;
+
+		case SwitchUndoStyleAction:
+			modeSelector->undoMode->SwitchStyle();
+			break;
+
+    	case SwitchModeToMouseXAction:
+			modeSelector->switchToMode(modeSelector->mouseXMode);
+			break;
+		case SwitchModeToMouseYAction:
+			modeSelector->switchToMode(modeSelector->mouseYMode);
+			break;
+		case SwitchModeToMouseScrollXAction:
+			modeSelector->switchToMode(modeSelector->mouseScrollXMode);
+			break;
+		case SwitchModeToMouseScrollYAction:
+			modeSelector->switchToMode(modeSelector->mouseScrollYMode);
+			break;
+		case SwitchModeToMouseDragXAction:
+			modeSelector->switchToMode(modeSelector->mouseDragXMode);
+			break;
+		case SwitchModeToMouseDragYAction:
+			modeSelector->switchToMode(modeSelector->mouseDragYMode);
+			break;
+		case SwitchModeToArrowsXAction:
+			modeSelector->switchToMode(modeSelector->arrowsXMode);
+			break;
+		case SwitchModeToArrowsYAction:
+			modeSelector->switchToMode(modeSelector->arrowsYMode);
+			break;
+		case SwithcModeToFusionXModeAction:
+			modeSelector->switchToMode(modeSelector->fusionOrbitXMode);
+			break;
+		case SwithcModeToFusionYModeAction:
+			modeSelector->switchToMode(modeSelector->fusionOrbitYMode);
+			break;
+
 		default:
 			break;
 	}
