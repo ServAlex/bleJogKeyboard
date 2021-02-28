@@ -105,7 +105,12 @@ void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 		}
 		case UndoEncoder:
 		{
-			Awaited2KeyComboWithModifier(parameter<0, KEY_LEFT_CTRL, (uint8_t)'z', KEY_LEFT_SHIFT, abs(parameter), 10);
+			Awaited2KeyComboWithAlternative(parameter<0, KEY_LEFT_CTRL, (uint8_t)'z', (uint8_t)'y', abs(parameter), 10);
+			break;
+		}
+		case UndoUnixEncoder:
+		{
+			Awaited2KeyComboWithModifier(parameter>0, KEY_LEFT_CTRL, (uint8_t)'z', KEY_LEFT_SHIFT, abs(parameter), 10);
 			break;
 		}
 		case MouseDragXEncoder:
@@ -248,6 +253,21 @@ void ExecutionController::Awaited2KeyComboWithModifier(bool positive, uint8_t ba
 	awaitingActionCompletion = true;
 }
 
+void ExecutionController::Awaited2KeyComboWithAlternative(bool positive, uint8_t baseKey, uint8_t secondaryKey, uint8_t reverseSecondaryKey, int32_t times, int32_t delay)
+{
+	Keyboard.press(baseKey);
+
+	for(int i = 0; i < times; i++)
+	{
+		Keyboard.write(positive?secondaryKey:reverseSecondaryKey);
+		vTaskDelay(delay);
+	}
+
+	completionThreshold = 1000;
+	actionCompletionWaitingStartedTime = millis();
+	awaitingActionCompletion = true;
+}
+
 void ExecutionController::TryActionCompletion(Action action)
 {
 	if(!awaitingActionCompletion)
@@ -301,7 +321,13 @@ void ExecutionController::TryActionCompletion(Action action)
 			break;
 		}
 		default:
+		{
 			Keyboard.releaseAll();
+			Mouse.release(MOUSE_MIDDLE);
+			Mouse.release(MOUSE_LEFT);
+			Mouse.release(MOUSE_RIGHT);
+			break;
+		}
 	}
 	
 	awaitingActionCompletion = false;

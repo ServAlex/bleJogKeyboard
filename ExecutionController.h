@@ -17,6 +17,7 @@ class ExecutionController
         int32_t completionThreshold;
         IRefresher* refresher;
         void Awaited2KeyComboWithModifier(bool positive, uint8_t baseKey, uint8_t secondaryKey, uint8_t modifierKey, int32_t times, int32_t delay);
+        void Awaited2KeyComboWithAlternative(bool positive, uint8_t baseKey, uint8_t secondaryKey, uint8_t reverseSecondaryKey, int32_t times, int32_t delay);
 
     public:
         ExecutionController(Logger* aLogger, ModeSelector* aModeSelector);
