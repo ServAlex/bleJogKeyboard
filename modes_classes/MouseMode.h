@@ -2,6 +2,7 @@
 #define MouseMode_h
 
 #include "IMode.h"
+#include "Axis.h"
 
 enum MouseModeStyle
 {
@@ -10,17 +11,11 @@ enum MouseModeStyle
     Drag
 };
 
-enum MouseAxis
-{
-    X,
-    Y
-};
-
 class MouseMode: public IMode
 {
     protected:
         ~MouseMode(){};
-        MouseAxis axis;
+        Axis axis;
         MouseModeStyle modeStyle;
     public:
         MouseMode(Logger* aLogger)
