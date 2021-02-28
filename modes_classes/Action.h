@@ -41,14 +41,6 @@ enum Action
     MuteAction,
 
     SwitchUndoStyleAction,
-
-    SwitchModeToMouseXAction,
-    SwitchModeToMouseYAction,
-    SwitchModeToMouseScrollXAction,
-    SwitchModeToMouseScrollYAction,
-    SwitchModeToMouseDragXAction,
-    SwitchModeToMouseDragYAction,
-
     SwitchModeToArrowsXAction,
     SwitchModeToArrowsYAction,
 

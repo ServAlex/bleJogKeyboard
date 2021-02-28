@@ -181,31 +181,6 @@ void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 			modeSelector->undoMode->SwitchStyle();
 			refresher->FullRefresh();
 			break;
-
-    	case SwitchModeToMouseXAction:
-			modeSelector->switchToMode(modeSelector->mouseXMode);
-			refresher->FullRefresh();
-			break;
-		case SwitchModeToMouseYAction:
-			modeSelector->switchToMode(modeSelector->mouseYMode);
-			refresher->FullRefresh();
-			break;
-		case SwitchModeToMouseScrollXAction:
-			modeSelector->switchToMode(modeSelector->mouseScrollXMode);
-			refresher->FullRefresh();
-			break;
-		case SwitchModeToMouseScrollYAction:
-			modeSelector->switchToMode(modeSelector->mouseScrollYMode);
-			refresher->FullRefresh();
-			break;
-		case SwitchModeToMouseDragXAction:
-			modeSelector->switchToMode(modeSelector->mouseDragXMode);
-			refresher->FullRefresh();
-			break;
-		case SwitchModeToMouseDragYAction:
-			modeSelector->switchToMode(modeSelector->mouseDragYMode);
-			refresher->FullRefresh();
-			break;
 		case SwitchModeToArrowsXAction:
 			modeSelector->switchToMode(modeSelector->arrowsXMode);
 			refresher->FullRefresh();

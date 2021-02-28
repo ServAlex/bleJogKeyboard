@@ -9,12 +9,6 @@
 #include "modes_classes/ArrowsYMode.h"
 #include "modes_classes/FusionOrbitXMode.h"
 #include "modes_classes/FusionOrbitYMode.h"
-#include "modes_classes/MouseDragXMode.h"
-#include "modes_classes/MouseDragYMode.h"
-#include "modes_classes/MouseScrollXMode.h"
-#include "modes_classes/MouseScrollYMode.h"
-#include "modes_classes/MouseXMode.h"
-#include "modes_classes/MouseYMode.h"
 #include "modes_classes/TabSwitchMode.h"
 #include "modes_classes/UndoMode.h"
 #include "modes_classes/VolumeMode.h"
@@ -44,12 +38,6 @@ class ModeSelector
         ArrowsYMode* arrowsYMode;
         FusionOrbitXMode* fusionOrbitXMode;
         FusionOrbitYMode* fusionOrbitYMode;
-        MouseDragXMode* mouseDragXMode;
-        MouseDragYMode* mouseDragYMode;
-        MouseScrollXMode* mouseScrollXMode;
-        MouseScrollYMode* mouseScrollYMode;
-        MouseXMode* mouseXMode;
-        MouseYMode* mouseYMode;
         TabSwithcMode* tabSwitchMode;
         UndoMode* undoMode;
         VolumeMode* volumeMode;

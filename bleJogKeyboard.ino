@@ -13,18 +13,12 @@
 #include "modes_classes/IMode.h"
 #include "modes_classes/ArrowsXMode.h"
 #include "modes_classes/ArrowsYMode.h"
-#include "modes_classes/MouseXMode.h"
-#include "modes_classes/MouseYMode.h"
-#include "modes_classes/MouseScrollXMode.h"
-#include "modes_classes/MouseScrollYMode.h"
 
 #include "modes_classes/AltTabMode.h"
 #include "modes_classes/TabSwitchMode.h"
 #include "modes_classes/VolumeMode.h"
 #include "modes_classes/ZoomMode.h"
 #include "modes_classes/UndoMode.h"
-#include "modes_classes/MouseDragXMode.h"
-#include "modes_classes/MouseDragYMode.h"
 
 #include "modes_classes/FusionOrbitXMode.h"
 #include "modes_classes/FusionOrbitYMode.h"
@@ -53,7 +47,7 @@ void setup()
 
     IMode** modes = (IMode**)malloc(modesCount*sizeof(IMode*));
     IMode* modeSelectionMode = new ModeSelectionMode(logger);
-    ModeSelector* modeSelector = new ModeSelector(logger, modes, 14, modeSelectionMode);
+    ModeSelector* modeSelector = new ModeSelector(logger, modes, 8, modeSelectionMode);
 
 
     modes[activeIndex++] = modeSelector->volumeMode = new VolumeMode(logger);
@@ -65,12 +59,6 @@ void setup()
 
     modes[activeIndex++] = modeSelector->arrowsXMode = new ArrowsXMode(logger);
     modes[activeIndex++] = modeSelector->arrowsYMode = new ArrowsYMode(logger);
-    modes[activeIndex++] = modeSelector->mouseXMode = new MouseXMode(logger);
-    modes[activeIndex++] = modeSelector->mouseYMode = new MouseYMode(logger);
-    modes[activeIndex++] = modeSelector->mouseDragXMode = new MouseDragXMode(logger);
-    modes[activeIndex++] = modeSelector->mouseDragYMode = new MouseDragYMode(logger);
-    modes[activeIndex++] = modeSelector->mouseScrollXMode = new MouseScrollXMode(logger);
-    modes[activeIndex++] = modeSelector->mouseScrollYMode = new MouseScrollYMode(logger);
 
     modes[activeIndex++] = modeSelector->mouseMode = new MouseMode(logger);
 
