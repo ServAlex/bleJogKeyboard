@@ -223,6 +223,23 @@ void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 			refresher->FullRefresh();
 			break;
 
+		case SwitchMouseAxisAction:
+			modeSelector->mouseMode->SwitchAxis();
+			refresher->FullRefresh();
+			break;
+		case SwitchMouseStyleToRegularAction:
+			modeSelector->mouseMode->SwitchToRegularStyle();
+			refresher->FullRefresh();
+			break;
+		case SwitchMouseStyleToScrollAction:
+			modeSelector->mouseMode->SwitchToScrollStyle();
+			refresher->FullRefresh();
+			break;
+		case SwitchMouseStyleToDragAction:
+			modeSelector->mouseMode->SwitchToDragStyle();
+			refresher->FullRefresh();
+			break;
+
 		default:
 			break;
 	}

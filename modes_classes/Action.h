@@ -53,7 +53,12 @@ enum Action
     SwitchModeToArrowsYAction,
 
     SwithcModeToFusionXModeAction,
-    SwithcModeToFusionYModeAction
+    SwithcModeToFusionYModeAction,
+
+    SwitchMouseAxisAction,
+    SwitchMouseStyleToRegularAction,
+    SwitchMouseStyleToScrollAction,
+    SwitchMouseStyleToDragAction
 };
 
 #endif

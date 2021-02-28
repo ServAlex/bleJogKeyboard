@@ -20,6 +20,8 @@
 #include "modes_classes/VolumeMode.h"
 #include "modes_classes/ZoomMode.h"
 
+#include "modes_classes/MouseMode.h"
+
 class ModeSelector
 {
     private:
@@ -52,6 +54,7 @@ class ModeSelector
         UndoMode* undoMode;
         VolumeMode* volumeMode;
         ZoomMode* zoomMode;
+        MouseMode* mouseMode;
 
         // next mode in the array of normal modes, not mode selection mode
         void switchToNextMode();

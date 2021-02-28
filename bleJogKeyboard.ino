@@ -33,6 +33,8 @@
 
 #include "modes_classes/ModeSelectionMode.h"
 
+#include "modes_classes/MouseMode.h"
+
 #include "IRefresher.h"
 #include "Controller.h"
 
@@ -51,7 +53,8 @@ void setup()
 
     IMode** modes = (IMode**)malloc(modesCount*sizeof(IMode*));
     IMode* modeSelectionMode = new ModeSelectionMode(logger);
-    ModeSelector* modeSelector = new ModeSelector(logger, modes, 13, modeSelectionMode);
+    ModeSelector* modeSelector = new ModeSelector(logger, modes, 14, modeSelectionMode);
+
 
     modes[activeIndex++] = modeSelector->volumeMode = new VolumeMode(logger);
 
@@ -68,6 +71,8 @@ void setup()
     modes[activeIndex++] = modeSelector->mouseDragYMode = new MouseDragYMode(logger);
     modes[activeIndex++] = modeSelector->mouseScrollXMode = new MouseScrollXMode(logger);
     modes[activeIndex++] = modeSelector->mouseScrollYMode = new MouseScrollYMode(logger);
+
+    modes[activeIndex++] = modeSelector->mouseMode = new MouseMode(logger);
 
 /*
     modes[activeIndex++] = modeSelector->fusionOrbitXMode = new FusionOrbitXMode(logger);
