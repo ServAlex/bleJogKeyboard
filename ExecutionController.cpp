@@ -12,6 +12,11 @@ ExecutionController::ExecutionController(Logger* aLogger, ModeSelector* aModeSel
 	Mouse.begin();
 }
 
+void ExecutionController::SetRefresher(IRefresher* aRefresher)
+{
+	refresher = aRefresher;
+}
+
 void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 {
 	logger->Log("executing action " + String(action));
@@ -169,37 +174,48 @@ void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 
 		case SwitchUndoStyleAction:
 			modeSelector->undoMode->SwitchStyle();
+			refresher->FullRefresh();
 			break;
 
     	case SwitchModeToMouseXAction:
 			modeSelector->switchToMode(modeSelector->mouseXMode);
+			refresher->FullRefresh();
 			break;
 		case SwitchModeToMouseYAction:
 			modeSelector->switchToMode(modeSelector->mouseYMode);
+			refresher->FullRefresh();
 			break;
 		case SwitchModeToMouseScrollXAction:
 			modeSelector->switchToMode(modeSelector->mouseScrollXMode);
+			refresher->FullRefresh();
 			break;
 		case SwitchModeToMouseScrollYAction:
 			modeSelector->switchToMode(modeSelector->mouseScrollYMode);
+			refresher->FullRefresh();
 			break;
 		case SwitchModeToMouseDragXAction:
 			modeSelector->switchToMode(modeSelector->mouseDragXMode);
+			refresher->FullRefresh();
 			break;
 		case SwitchModeToMouseDragYAction:
 			modeSelector->switchToMode(modeSelector->mouseDragYMode);
+			refresher->FullRefresh();
 			break;
 		case SwitchModeToArrowsXAction:
 			modeSelector->switchToMode(modeSelector->arrowsXMode);
+			refresher->FullRefresh();
 			break;
 		case SwitchModeToArrowsYAction:
 			modeSelector->switchToMode(modeSelector->arrowsYMode);
+			refresher->FullRefresh();
 			break;
 		case SwithcModeToFusionXModeAction:
 			modeSelector->switchToMode(modeSelector->fusionOrbitXMode);
+			refresher->FullRefresh();
 			break;
 		case SwithcModeToFusionYModeAction:
 			modeSelector->switchToMode(modeSelector->fusionOrbitYMode);
+			refresher->FullRefresh();
 			break;
 
 		default:

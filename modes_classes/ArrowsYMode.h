@@ -24,7 +24,7 @@ class ArrowsYMode: public IMode
             switch(buttonPin)
             {
                 case Button34:
-                    overrideAction = SwitchModeToArrowsYAction;
+                    overrideAction = SwitchModeToArrowsXAction;
                     break;
                 default:
                     overrideAction = None;

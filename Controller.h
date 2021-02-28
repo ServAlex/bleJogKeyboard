@@ -8,8 +8,9 @@
 #include "ViewModel.h"
 #include "modes_classes/IMode.h"
 #include "modes_classes/Action.h"
+#include "IRefresher.h"
 
-class Controller
+class Controller: IRefresher
 {
     private: 
         Logger* logger;
@@ -25,6 +26,13 @@ class Controller
         void ButtonPressed(int32_t pinNumber);
         void EncderChanged(int32_t newValue, int32_t diff);
         void RegularUpdate();
+
+        void FullRefresh()
+        {
+            logger->Log("refresh requested");
+            FillViewModel();
+            view->fullRedraw(viewModel);
+        }
 };
 
 #endif

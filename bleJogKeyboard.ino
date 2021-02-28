@@ -33,6 +33,7 @@
 
 #include "modes_classes/ModeSelectionMode.h"
 
+#include "IRefresher.h"
 #include "Controller.h"
 
 uint32_t lastUpdated = 0;
@@ -85,6 +86,7 @@ void setup()
                             modeSelector,
                             view,
                             viewModel);
+    executionController->SetRefresher((IRefresher*)controller);
 
     lastUpdated = millis();
 
