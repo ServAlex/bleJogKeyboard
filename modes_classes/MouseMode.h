@@ -64,7 +64,7 @@ class MouseMode: public IMode
         void SwitchAxis()
         {
             axis = axis==X?Y:X;
-            logger->Log("switching axis, new axis " + String(axis));
+            //logger->Log("switching axis, new axis " + String(axis));
             switch(modeStyle)
             {
                 case Regular:

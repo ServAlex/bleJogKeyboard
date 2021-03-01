@@ -5,8 +5,6 @@
 #include "Logger.h"
 #include "modes_classes/IMode.h"
 #include "modes_classes/AltTabMode.h"
-#include "modes_classes/ArrowsXMode.h"
-#include "modes_classes/ArrowsYMode.h"
 #include "modes_classes/FusionOrbitXMode.h"
 #include "modes_classes/FusionOrbitYMode.h"
 #include "modes_classes/TabSwitchMode.h"
@@ -15,6 +13,7 @@
 #include "modes_classes/ZoomMode.h"
 
 #include "modes_classes/MouseMode.h"
+#include "modes_classes/ArrowsMode.h"
 
 class ModeSelector
 {
@@ -34,8 +33,6 @@ class ModeSelector
         IMode* getPreviousMode();
 
         AltTabMode* altTabMode;
-        ArrowsXMode* arrowsXMode;
-        ArrowsYMode* arrowsYMode;
         FusionOrbitXMode* fusionOrbitXMode;
         FusionOrbitYMode* fusionOrbitYMode;
         TabSwithcMode* tabSwitchMode;
@@ -43,6 +40,7 @@ class ModeSelector
         VolumeMode* volumeMode;
         ZoomMode* zoomMode;
         MouseMode* mouseMode;
+        ArrowsMode* arrowsMode;
 
         // next mode in the array of normal modes, not mode selection mode
         void switchToNextMode();

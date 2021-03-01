@@ -181,14 +181,6 @@ void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 			modeSelector->undoMode->SwitchStyle();
 			refresher->FullRefresh();
 			break;
-		case SwitchModeToArrowsXAction:
-			modeSelector->switchToMode(modeSelector->arrowsXMode);
-			refresher->FullRefresh();
-			break;
-		case SwitchModeToArrowsYAction:
-			modeSelector->switchToMode(modeSelector->arrowsYMode);
-			refresher->FullRefresh();
-			break;
 		case SwithcModeToFusionXModeAction:
 			modeSelector->switchToMode(modeSelector->fusionOrbitXMode);
 			refresher->FullRefresh();
@@ -212,6 +204,10 @@ void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 			break;
 		case SwitchMouseStyleToDragAction:
 			modeSelector->mouseMode->SwitchToDragStyle();
+			refresher->FullRefresh();
+			break;
+		case SwitchArrowsAxisAction:
+			modeSelector->arrowsMode->SwithcAxis();
 			refresher->FullRefresh();
 			break;
 

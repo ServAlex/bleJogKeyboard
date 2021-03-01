@@ -11,8 +11,6 @@
 //#include "parts/display_part.h"
 
 #include "modes_classes/IMode.h"
-#include "modes_classes/ArrowsXMode.h"
-#include "modes_classes/ArrowsYMode.h"
 
 #include "modes_classes/AltTabMode.h"
 #include "modes_classes/TabSwitchMode.h"
@@ -28,6 +26,7 @@
 #include "modes_classes/ModeSelectionMode.h"
 
 #include "modes_classes/MouseMode.h"
+#include "modes_classes/ArrowsMode.h"
 
 #include "IRefresher.h"
 #include "Controller.h"
@@ -47,20 +46,17 @@ void setup()
 
     IMode** modes = (IMode**)malloc(modesCount*sizeof(IMode*));
     IMode* modeSelectionMode = new ModeSelectionMode(logger);
-    ModeSelector* modeSelector = new ModeSelector(logger, modes, 8, modeSelectionMode);
-
+    ModeSelector* modeSelector = new ModeSelector(logger, modes, 7, modeSelectionMode);
 
     modes[activeIndex++] = modeSelector->volumeMode = new VolumeMode(logger);
+
+    modes[activeIndex++] = modeSelector->mouseMode = new MouseMode(logger);
+    modes[activeIndex++] = modeSelector->arrowsMode = new ArrowsMode(logger);
 
     modes[activeIndex++] = modeSelector->altTabMode = new AltTabMode(logger);
     modes[activeIndex++] = modeSelector->tabSwitchMode =  new TabSwithcMode(logger);
     modes[activeIndex++] = modeSelector->zoomMode = new ZoomMode(logger);
     modes[activeIndex++] = modeSelector->undoMode = new UndoMode(logger);
-
-    modes[activeIndex++] = modeSelector->arrowsXMode = new ArrowsXMode(logger);
-    modes[activeIndex++] = modeSelector->arrowsYMode = new ArrowsYMode(logger);
-
-    modes[activeIndex++] = modeSelector->mouseMode = new MouseMode(logger);
 
 /*
     modes[activeIndex++] = modeSelector->fusionOrbitXMode = new FusionOrbitXMode(logger);

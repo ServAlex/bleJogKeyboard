@@ -50,7 +50,9 @@ enum Action
     SwitchMouseAxisAction,
     SwitchMouseStyleToRegularAction,
     SwitchMouseStyleToScrollAction,
-    SwitchMouseStyleToDragAction
+    SwitchMouseStyleToDragAction,
+
+    SwitchArrowsAxisAction
 };
 
 #endif

@@ -1,19 +1,23 @@
-#ifndef ArrowsYMode_h
-#define ArrowsYMode_h
+#ifndef ArrowsMode_h
+#define ArrowsMode_h
 
 #include "IMode.h"
+#include "Axis.h"
 
-class ArrowsYMode: public IMode
+class ArrowsMode: public IMode
 {
     protected:
-        ~ArrowsYMode(){};
+        ~ArrowsMode(){};
+        Axis axis;
     public:
-        ArrowsYMode(Logger* aLogger)
+        ArrowsMode(Logger* aLogger)
         {
             logger = aLogger;
-            name = "arrows Y";
-            encoderAction = ArrowsYEncoderAction;
-            secondaryEncoderAction = ArrowsXEncoderAction;
+            name = "arrows X";
+            axis = X;
+
+            encoderAction = ArrowsXEncoderAction;
+            secondaryEncoderAction = ArrowsYEncoderAction;
         };
 
         Action ActionNameForButton(int buttonPin)
@@ -24,7 +28,7 @@ class ArrowsYMode: public IMode
             switch(buttonPin)
             {
                 case Button34:
-                    overrideAction = SwitchModeToArrowsXAction;
+                    overrideAction = SwitchArrowsAxisAction;
                     break;
                 default:
                     overrideAction = None;
@@ -35,6 +39,13 @@ class ArrowsYMode: public IMode
                 return overrideAction;
 
             return baseAction;
+        };
+
+        void SwithcAxis()
+        {
+            axis = axis==X?Y:X;
+            encoderAction = (axis==X)?ArrowsXEncoderAction:ArrowsYEncoderAction;
+            name = (axis==X)?"arrows X":"arrows Y";
         };
 };
 
