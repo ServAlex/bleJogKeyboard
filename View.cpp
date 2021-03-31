@@ -26,6 +26,7 @@ void View::fullRedraw(ViewModel* viewModel)
     // clear all
     backDraw();
 
+    // is in mode selection mode
     if(viewModel->isInModeSelectionMode)
     {
         tft.drawCircle(5, 5, 5, TFT_YELLOW);
@@ -35,6 +36,7 @@ void View::fullRedraw(ViewModel* viewModel)
         tft.fillCircle(5, 5, 5, TFT_YELLOW);
     }
 
+    // connection status
     if(viewModel->isConnected)
     {
         tft.fillCircle(25, 5, 5, TFT_GREEN);
@@ -43,6 +45,33 @@ void View::fullRedraw(ViewModel* viewModel)
     {
         tft.drawCircle(25, 5, 5, TFT_GREEN);
     }
+
+    // color for battery
+    uint32_t batteryColor = TFT_YELLOW;
+    if(viewModel->voltage > 4.3)
+    {
+        batteryColor = TFT_BLUE;
+    }
+    else if(viewModel->voltage > 3.9)
+    {
+        batteryColor = TFT_GREEN;
+    }
+    else if(viewModel->voltage > 3.5)
+    {
+        batteryColor = TFT_YELLOW;
+    }
+    else 
+    {
+        batteryColor = TFT_RED;
+    }
+
+    // charge percentage bar
+    tft.drawRoundRect(2, tft.height() - 7, tft.width()-2*2, 7, 4, batteryColor);
+    tft.fillRoundRect(5, tft.height() - 5, 4 + (tft.width()-5*2-4)*min(viewModel->chargePortion, 1), 3, 2, batteryColor);
+
+    // voltage text
+    tft.setTextSize(1);
+    tft.drawString(String(viewModel->voltage), tft.width()-30, 90);
 
     // draw all
     tft.setTextSize(3);

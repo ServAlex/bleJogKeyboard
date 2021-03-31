@@ -4,7 +4,8 @@ Controller::Controller(Logger* aLogger,
                         ExecutionController* anExecutionController, 
                         ModeSelector* aModeSelector, 
                         View* aView,
-                        ViewModel* aViewModel)
+                        ViewModel* aViewModel, 
+                        SensorController* aSensorController)
 {
     this->logger = aLogger;
     this->executionController = anExecutionController;
@@ -12,6 +13,7 @@ Controller::Controller(Logger* aLogger,
     this->view = aView;
     this->viewModel = aViewModel;
     this->viewModel->encoderValue = 0;
+    this->sensorController = aSensorController;
 
     FillViewModel();
     view->fullRedraw(viewModel);
@@ -101,10 +103,10 @@ void Controller::EncderChanged(int32_t newValue, int32_t diff)
     }
 }
 
-void Controller::VoltageChanged(double voltage)
+void Controller::VoltageChanged(float voltage, float chargePortion)
 {
     this->viewModel->voltage = voltage;
-    this->viewModel->chargePortion = (voltage-3.2)/(4.2-3.2);
+    this->viewModel->chargePortion = chargePortion;
     view->fullRedraw(viewModel);
 }
 
@@ -113,12 +115,21 @@ void Controller::IsConnectedChanged(bool isConnected)
     this->viewModel->isConnected = isConnected;
     view->fullRedraw(viewModel);
 }
+/*
+void Controller::VoltageChanged(float voltage, float chargePortion)
+{
+    this->viewModel->voltage = voltage;
+    this->viewModel->chargePortion = chargePortion;
+    view->fullRedraw(viewModel);
+}
+*/
 
 void Controller::RegularUpdate()
 {
     Action action = modeSelector->getCurrentMode()->ActionNameForEncoder();
     executionController->TryActionCompletion(action);
     executionController->RegularStateUpdate();
+    sensorController->RegularUpdate();
     //check sensors
 }
 

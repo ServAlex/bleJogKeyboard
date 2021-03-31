@@ -29,7 +29,9 @@
 #include "modes_classes/ArrowsMode.h"
 
 #include "IRefresher.h"
+#include "IStateChangeWatcher.h"
 #include "Controller.h"
+#include "SensorController.h"
 
 uint32_t lastUpdated = 0;
 
@@ -69,14 +71,18 @@ void setup()
     ExecutionController* executionController = new ExecutionController(logger, modeSelector);
     View* view = new View(logger);
     ViewModel* viewModel = new ViewModel();
+    SensorsModel* sensorsModel = new SensorsModel();
+    SensorController* sensorController = new SensorController(logger, sensorsModel);
 
     controller = new Controller(logger, 
                             executionController,
                             modeSelector,
                             view,
-                            viewModel);
+                            viewModel,
+                            sensorController);
     executionController->SetRefresher((IRefresher*)controller);
     executionController->SetStateChangeWatcher((IStateChangeWatcher*)controller);
+    sensorController->SetStateChangeWatcher((IStateChangeWatcher*)controller);
 
     lastUpdated = millis();
 

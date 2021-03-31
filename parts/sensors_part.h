@@ -6,6 +6,11 @@
 #include <Adafruit_SHT31.h>
 #include <BH1750FVI.h>
 #include "SparkFunCCS811.h"
+/*
+advanced voltage reading
+#include <driver/adc.h>
+#include "esp_adc_cal.h"
+*/
 
 // HDC1080 another temp and humidity sensor
 //#include "ClosedCube_HDC1080.h"
@@ -58,6 +63,18 @@ void sensorsSetup(SensorsConfig config)
 
 	Wire.begin(); //Inialize I2C Hardware
 
+	if(sensorsConfig.voltage_active)
+	{
+		/*
+		advanced voltage reading
+		esp_adc_cal_characteristics_t adc_chars;
+		esp_adc_cal_value_t val_type = esp_adc_cal_characterize((adc_unit_t)ADC_UNIT_1, (adc_atten_t)ADC_ATTEN_DB_2_5, (adc_bits_width_t)ADC_WIDTH_BIT_12, 1100, &adc_chars);
+		adc1_config_channel_atten(ADC1_CHANNEL_6, ADC_ATTEN_0db);
+		adc1_config_width(ADC_WIDTH_12Bit);
+
+		pinMode(14, OUTPUT);
+		*/
+	}
 	if(sensorsConfig.co2_active)
 	{
 		co2Sensor.begin();
@@ -80,10 +97,25 @@ void pollSensors()
 {
 	if(sensorsConfig.voltage_active)
 	{
+		// https://github.com/Xinyuan-LilyGO/TTGO-T-Display/issues/35#issuecomment-749511521
+		/*
+		advance voltage reading
+		digitalWrite(14, HIGH);
+		float measurement = (float) analogRead(34);
+		digitalWrite(14, LOW);
+		*/
+/*
+		digitalWrite(14, HIGH);
+		float measurement = (float) adc1_get_voltage(ADC1_CHANNEL_6);
+		digitalWrite(14, LOW);
+
+		float battery_voltage = (measurement / 4095.0) * 7.26;
+*/
+
 		uint16_t voltageRaw = analogRead(ADC_PIN);
-		//float battery_voltage = voltageMin + (voltageMax-voltageMin)*parameter8/255.0;
 		battery_voltage = ((float)voltageRaw / 4095.0) * 2.0 * 3.3 * (vref / 1000.0);
 		battery_percentage = min(1.f, (battery_voltage-voltageMin)/(voltageMax-voltageMin));
+		Serial.print(battery_voltage);
 	}
 
 	if(sensorsConfig.temperature_humidity_active)

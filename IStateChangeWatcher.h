@@ -4,7 +4,7 @@
 class IStateChangeWatcher
 {
     public:
-        //virtual void VoltageChanged(double voltage, double chargePortion);
+        virtual void VoltageChanged(float voltage, float chargePortion);
         virtual void IsConnectedChanged(bool isConnected);
 };
 
