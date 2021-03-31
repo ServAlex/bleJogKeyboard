@@ -19,8 +19,18 @@ class IMode
         {
             switch (buttonPin)
             {
+                /*
                 case ButtonModeSelect:
                     return StartModeSelection;
+                    break;
+*/
+
+                case Button31:
+                    return SwitchToPreviousModeAction;
+                    break;
+
+                case Button21:
+                    return SwitchToNextModeAction;
                     break;
                 
                 default:

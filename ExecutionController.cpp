@@ -211,6 +211,15 @@ void ExecutionController::ExecuteAction(Action action, int32_t parameter)
 			refresher->FullRefresh();
 			break;
 
+		case SwitchToNextModeAction:
+			modeSelector->switchToNextMode();
+			refresher->FullRefresh();
+			break;
+		case SwitchToPreviousModeAction:
+			modeSelector->switchToPreviousMode();
+			refresher->FullRefresh();
+			break;
+
 		default:
 			break;
 	}

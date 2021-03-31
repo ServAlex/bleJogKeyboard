@@ -42,6 +42,7 @@ void View::fullRedraw(ViewModel* viewModel)
     tft.setTextSize(2);
     tft.drawString(String(viewModel->modeIndex) + "/" + String(viewModel->modesCount), 10, 70);
     
+    tft.setTextSize(1);
     tft.drawString(String(viewModel->encoderValue), 10, 90);
 }
 

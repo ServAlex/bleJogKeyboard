@@ -41,11 +41,12 @@ enum Action
     MuteAction,
 
     SwitchUndoStyleAction,
-    SwitchModeToArrowsXAction,
-    SwitchModeToArrowsYAction,
 
     SwithcModeToFusionXModeAction,
     SwithcModeToFusionYModeAction,
+
+    SwitchToNextModeAction,
+    SwitchToPreviousModeAction,
 
     SwitchMouseAxisAction,
     SwitchMouseStyleToRegularAction,
