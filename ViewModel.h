@@ -13,6 +13,9 @@ class ViewModel
         int32_t modesCount;
         int32_t encoderValue;
         bool isInModeSelectionMode;
+        float chargePortion;
+        float voltage;
+        bool isConnected;
 };
 
 #endif

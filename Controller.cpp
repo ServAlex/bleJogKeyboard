@@ -101,10 +101,25 @@ void Controller::EncderChanged(int32_t newValue, int32_t diff)
     }
 }
 
+void Controller::VoltageChanged(double voltage)
+{
+    this->viewModel->voltage = voltage;
+    this->viewModel->chargePortion = (voltage-3.2)/(4.2-3.2);
+    view->fullRedraw(viewModel);
+}
+
+void Controller::IsConnectedChanged(bool isConnected)
+{
+    this->viewModel->isConnected = isConnected;
+    view->fullRedraw(viewModel);
+}
+
 void Controller::RegularUpdate()
 {
     Action action = modeSelector->getCurrentMode()->ActionNameForEncoder();
     executionController->TryActionCompletion(action);
+    executionController->RegularStateUpdate();
+    //check sensors
 }
 
 void Controller::FillViewModel()

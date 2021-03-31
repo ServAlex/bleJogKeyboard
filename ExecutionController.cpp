@@ -1,5 +1,7 @@
 #include "ExecutionController.h"
 
+bool lastIsConnected;
+
 ExecutionController::ExecutionController(Logger* aLogger, ModeSelector* aModeSelector)
 {
 	this->logger = aLogger;
@@ -7,6 +9,7 @@ ExecutionController::ExecutionController(Logger* aLogger, ModeSelector* aModeSel
 	actionCompletionWaitingStartedTime = 0;
 	completionThreshold = 1000;
 	modeSelector = aModeSelector;
+	lastIsConnected = false;
 
 	Keyboard.begin();
 	Mouse.begin();
@@ -15,6 +18,11 @@ ExecutionController::ExecutionController(Logger* aLogger, ModeSelector* aModeSel
 void ExecutionController::SetRefresher(IRefresher* aRefresher)
 {
 	refresher = aRefresher;
+}
+
+void ExecutionController::SetStateChangeWatcher(IStateChangeWatcher* aStateChangeWatcher)
+{
+	stateChangeWatcher = aStateChangeWatcher;
 }
 
 void ExecutionController::ExecuteAction(Action action, int32_t parameter)
@@ -328,4 +336,15 @@ void ExecutionController::TryActionCompletion(Action action)
 	}
 	
 	awaitingActionCompletion = false;
+}
+
+void ExecutionController::RegularStateUpdate()
+{
+	bool isConnected = Keyboard.isConnected();
+	if(lastIsConnected != isConnected)
+	{
+		logger->Log("isConnected changed to " + String(isConnected));
+		lastIsConnected = isConnected;
+		this->stateChangeWatcher->IsConnectedChanged(isConnected);
+	}
 }

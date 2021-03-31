@@ -32,7 +32,16 @@ void View::fullRedraw(ViewModel* viewModel)
     }
     else
     {
-        tft.fillCircle (5, 5, 5, TFT_YELLOW);
+        tft.fillCircle(5, 5, 5, TFT_YELLOW);
+    }
+
+    if(viewModel->isConnected)
+    {
+        tft.fillCircle(25, 5, 5, TFT_GREEN);
+    }
+    else
+    {
+        tft.drawCircle(25, 5, 5, TFT_GREEN);
     }
 
     // draw all

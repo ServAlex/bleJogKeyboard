@@ -9,8 +9,9 @@
 #include "modes_classes/IMode.h"
 #include "modes_classes/Action.h"
 #include "IRefresher.h"
+#include "IStateChangeWatcher.h"
 
-class Controller: IRefresher
+class Controller: IRefresher, IStateChangeWatcher
 {
     private: 
         Logger* logger;
@@ -25,6 +26,8 @@ class Controller: IRefresher
         Controller(Logger* aLogger, ExecutionController* anExecutionController, ModeSelector* aModeSelector, View* aView, ViewModel* aViewModel);
         void ButtonPressed(int32_t pinNumber);
         void EncderChanged(int32_t newValue, int32_t diff);
+        void VoltageChanged(double voltage);
+        void IsConnectedChanged(bool isConnected);
         void RegularUpdate();
 
         void FullRefresh()

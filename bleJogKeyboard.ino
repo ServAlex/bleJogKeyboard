@@ -76,6 +76,7 @@ void setup()
                             view,
                             viewModel);
     executionController->SetRefresher((IRefresher*)controller);
+    executionController->SetStateChangeWatcher((IStateChangeWatcher*)controller);
 
     lastUpdated = millis();
 
